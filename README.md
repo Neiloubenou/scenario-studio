@@ -66,7 +66,7 @@ Figures today: 222,483 concrete tests, 49,305 excluded combinations, 109,878 def
 | `inputs/references/` | Foretellix / SAFE public scenario library (VMAD-SG1-11-06, 2020). |
 | `reference/stage1-chain/` | Manual reference of milestone 1 (36 expected tests) and its check with Torc's original engine. |
 | `scripts/` | Catalogue, HIRE justification, counts, Excel, previous apps, docs. |
-| `tests/` | Reference, full catalogue and v3 checks. |
+| `tests/` | Reference, full catalogue and v3 checks; `tests/e2e/` drives the built page in a browser. |
 | `docs/` | `behaviors.md`, `scenarios.md`, `criteria.md`, `odd-variants.md`, `sotif.md` (generated), meeting notes. |
 
 ## Build and test
@@ -75,6 +75,7 @@ Python 3 with `openpyxl` and `xlrd`, Node 18 or later.
 
 ```
 npm test             # reference 36/36, full catalogue, v3 checks
+npm run test:e2e     # every path of the page in Chromium (Playwright), 83 checks
 npm run build:v3     # data model, demo results, page
 npm run build:docs   # docs/*.md
 npm run build        # everything, from the catalogue to the docs

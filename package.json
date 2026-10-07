@@ -1,6 +1,6 @@
 {
   "name": "scenario-studio",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "private": true,
   "type": "module",
   "description": "Behavior dashboards for the Torc SDT: scenarios with HIRE risk, Jama pass/fail criteria, ODD variants from the I-35 report, generated and excluded concrete tests, results and tree view.",
@@ -9,6 +9,10 @@
     "build:catalogue": "python3 scripts/build_catalog_full.py && python3 scripts/hire_links.py && node scripts/counts.mjs && python3 scripts/build_excel.py && python3 scripts/build_apps.py",
     "build:v3": "cd apps/v3 && python3 build_data.py && node build_stats.mjs && python3 build.py",
     "build:docs": "python3 scripts/build_docs.py",
-    "build": "npm run build:catalogue && npm run build:v3 && npm run build:docs"
+    "build": "npm run build:catalogue && npm run build:v3 && npm run build:docs",
+    "test:e2e": "node tests/e2e/e2e-v3.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
   }
 }

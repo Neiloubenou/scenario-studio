@@ -151,7 +151,7 @@ export function hireCombos(beh, D){
 /* ---------- text matcher (English and French) -> template scenario ---------- */
 const N = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’']/g, ' ');
 const TEXT_RULES = [
-  [/(no driver present)/, null, []], [/(non\W*incident|non.?collision|vehicle failure)/, null, ['FB-01', 'FB-02']], [/(control loss|loss of control)/, null, ['RD-12', 'RD-13', 'LC-RD-07']],
+  [/(no driver present)/, null, [], 'This NHTSA type is a vehicle moving with nobody at the controls: it describes the subject vehicle itself, not a traffic scene to test.'], [/(non\W*incident|non.?collision|vehicle failure)/, null, ['FB-01', 'FB-02']], [/(control loss|loss of control)/, null, ['RD-12', 'RD-13', 'LC-RD-07']],
   [/(road edge departure|lane departure|run.?off)/, null, ['RD-09', 'LC-RD-06']], [/(running red light|red light)/, null, ['URB-02']], [/(running stop sign|stop sign|all.?way stop)/, null, ['URB-03']],
   [/(backing|reversing|reverse)/, null, ['RMP-10', 'HUB-03']], [/(ltap|left turn across|turning left)/, null, ['URB-04']], [/(crossing paths|interceptor|junction|intersection)/, null, ['URB-07', 'URB-02']],
   [/(turning right)/, null, ['URB-05', 'URB-06']], [/(turning|turns)/, /(same direction|ahead)/, ['URB-16']], [/(parking)/, null, ['URB-11', 'URB-12']],
@@ -186,6 +186,11 @@ export function matchTemplate(text, beh, D){
     return cands.find(s => s.links[beh.code] && s.generable) || cands.find(s => s.generable) || cands[0] || null;
   }
   return null;
+}
+export function whyNoTemplate(text){
+  const t = N(text);
+  const r = TEXT_RULES.find(([a, b, ids, why]) => why && a.test(t) && (!b || b.test(t)));
+  return r ? r[3] : '';
 }
 
 /* ---------- draft from a structured spec (Claude or manual) ---------- */

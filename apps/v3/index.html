@@ -829,7 +829,7 @@ function hireCombos(beh, D){
 /* ---------- text matcher (English and French) -> template scenario ---------- */
 const N = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’']/g, ' ');
 const TEXT_RULES = [
-  [/(no driver present)/, null, []], [/(non\W*incident|non.?collision|vehicle failure)/, null, ['FB-01', 'FB-02']], [/(control loss|loss of control)/, null, ['RD-12', 'RD-13', 'LC-RD-07']],
+  [/(no driver present)/, null, [], 'This NHTSA type is a vehicle moving with nobody at the controls: it describes the subject vehicle itself, not a traffic scene to test.'], [/(non\W*incident|non.?collision|vehicle failure)/, null, ['FB-01', 'FB-02']], [/(control loss|loss of control)/, null, ['RD-12', 'RD-13', 'LC-RD-07']],
   [/(road edge departure|lane departure|run.?off)/, null, ['RD-09', 'LC-RD-06']], [/(running red light|red light)/, null, ['URB-02']], [/(running stop sign|stop sign|all.?way stop)/, null, ['URB-03']],
   [/(backing|reversing|reverse)/, null, ['RMP-10', 'HUB-03']], [/(ltap|left turn across|turning left)/, null, ['URB-04']], [/(crossing paths|interceptor|junction|intersection)/, null, ['URB-07', 'URB-02']],
   [/(turning right)/, null, ['URB-05', 'URB-06']], [/(turning|turns)/, /(same direction|ahead)/, ['URB-16']], [/(parking)/, null, ['URB-11', 'URB-12']],
@@ -864,6 +864,11 @@ function matchTemplate(text, beh, D){
     return cands.find(s => s.links[beh.code] && s.generable) || cands.find(s => s.generable) || cands[0] || null;
   }
   return null;
+}
+function whyNoTemplate(text){
+  const t = N(text);
+  const r = TEXT_RULES.find(([a, b, ids, why]) => why && a.test(t) && (!b || b.test(t)));
+  return r ? r[3] : '';
 }
 
 /* ---------- draft from a structured spec (Claude or manual) ---------- */
@@ -1508,7 +1513,7 @@ document.addEventListener('click', async e => {
   if (t.dataset.gHire) { const c = hireCombos(b, DATA).find(x => x.key === t.dataset.gHire); const d = c && draftFromHire(b, c, DATA); if (d) { registerDraft(d); toast('Draft added.'); } else toast('No template for this combination yet.'); return render(); }
   if (t.dataset.gAll) { const cs = hireCombos(b, DATA).filter(c => !G.onlyGaps || !c.covered.length); let n = 0; for (const c of cs) { const d = draftFromHire(b, c, DATA); if (d) { registerDraft(d); n++; } } toast(`${n} drafts added.`); return render(); }
   if (t.dataset.gTc) { const tc = SO.tcs[t.dataset.gTc]; const tpl = matchTemplate(`${tc.element} ${tc.text}`, b, DATA); const d = tpl && draftFromTemplate(b, tpl, {title: `${tc.text} (${tc.id})`, desc: `Generated from ${tc.id} ${tc.layer} ${tc.element}: ${tc.text}. Template ${tpl.id}. FIs ${tc.fis.join(', ')}.`, source: {type: 'TC', ref: tc.id}, tcs: [tc.id]}, DATA); if (d) { registerDraft(d); toast(`Draft added from ${tpl.id}.`); } else toast(tpl ? `Closest scenario is ${tpl.id}, not generable yet (milestone 2).` : 'No template recognised: describe it in « Describe it ».'); return render(); }
-  if (t.dataset.gRef) { const tpl = matchTemplate(t.dataset.gLabel.replace(/^(Foretellix §\S+|NHTSA #\d+)\s*/, ''), b, DATA) || matchTemplate(t.dataset.gText, b, DATA); const d = tpl && draftFromTemplate(b, tpl, {title: `${t.dataset.gLabel}`, desc: `Generated from ${t.dataset.gLabel}. Template ${tpl.id}.`, source: {type: t.dataset.gRef.split(' ')[0], ref: t.dataset.gRef}}, DATA); if (d) { registerDraft(d); toast(`Draft added from ${tpl.id}.`); } else toast(tpl ? `Closest scenario is ${tpl.id}, not generable yet (milestone 2).` : 'No template recognised for this reference.'); return render(); }
+  if (t.dataset.gRef) { const tpl = matchTemplate(t.dataset.gLabel.replace(/^(Foretellix §\S+|NHTSA #\d+)\s*/, ''), b, DATA) || matchTemplate(t.dataset.gText, b, DATA); const d = tpl && draftFromTemplate(b, tpl, {title: `${t.dataset.gLabel}`, desc: `Generated from ${t.dataset.gLabel}. Template ${tpl.id}.`, source: {type: t.dataset.gRef.split(' ')[0], ref: t.dataset.gRef}}, DATA); if (d) { registerDraft(d); toast(`Draft added from ${tpl.id}.`); } else toast(tpl ? `Closest scenario is ${tpl.id}, not generable yet (milestone 2).` : (whyNoTemplate(t.dataset.gLabel) || 'No template recognised: describe it in « Describe it ».')); return render(); }
   if (t.dataset.gAccept) { acceptDraft(t.dataset.gAccept); return render(); }
   if (t.dataset.gDiscard) { const d = G.drafts.find(x => x.id === t.dataset.gDiscard); delete SCN[d.id]; G.drafts = G.drafts.filter(x => x !== d); return render(); }
   if (t.dataset.gAcceptall) { G.drafts.filter(d => d.links[state.beh] && !d.errors.length).map(d => d.id).forEach(acceptDraft); return render(); }
@@ -1518,7 +1523,7 @@ document.addEventListener('click', async e => {
   if (t.id === 'gAi' && sampleCap && !G.busy) { G.text = $('#gText').value; if (!G.text.trim()) return toast('Describe the situation first.'); G.busy = true; render(); try { const d = await draftWithClaude(G.text); registerDraft(d); toast(d.errors.length ? 'Draft added, the engine found values to fix.' : 'Draft added.'); } catch (err) { toast(err && err.code === 'not_granted' ? 'Claude is not allowed on this page.' : 'Claude could not draft this one.'); } G.busy = false; return render(); }
   if (t.dataset.soTab) { G.sotab = t.dataset.soTab; return render(); }
   if (t.dataset.soF) { G.soFilter = t.dataset.soF; return render(); }
-  if (t.dataset.soFi) { G.soSel = t.dataset.soFi; if (t.dataset.soGo) G.sotab = 'fi'; return render(); }
+  if (t.dataset.soFi) { G.soSel = t.dataset.soFi; if (t.dataset.soGo) { G.sotab = 'fi'; G.soFilter = 'all'; G.soBlock = 'all'; render(); document.querySelector('tr[data-so-fi].sel')?.scrollIntoView({block: 'center'}); return; } return render(); }
   if (t.dataset.fiTree) { G.treeMode = 'fi'; G.treeFi = t.dataset.fiTree; return setView('tree'); }
   if (t.dataset.treeMode) { G.treeMode = t.dataset.treeMode; return render(); }
 });

@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.1 · 7 October 2026
+* End to end test of every path of the page (`tests/e2e/e2e-v3.mjs`, 83 checks): overview, behavior dashboard and scenario file, Generate from every source, SOTIF analysis, trees, ODD, results import and exports, phone width and dark theme.
+* Fix: an FI chip in the hazard failure modes now opens the FI even when a status or block filter hides it.
+* Fix: NHTSA #1 « No driver present » now explains why there is nothing to generate instead of « no template ».
+
 ## 3.1.0 · 7 October 2026
 * Generate view: drafts for a behavior from HIRE combinations (hazard × command × ODD condition), triggering conditions, Foretellix and NHTSA references, or a description (template match, or Claude when available). Accept, preview, discard, export.
 * SOTIF analysis view: FIs with AV3.0 causes, TCs, STPA context groups and QA findings, hazard failure modes, each traced to scenarios, tests and results.
