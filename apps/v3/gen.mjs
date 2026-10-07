@@ -108,12 +108,16 @@ export function draftFromHire(beh, combo, D){
 }
 export function draftFromTemplate(beh, tpl, meta, D){
   if (!tpl || !tpl.generable || beh.code === 'HUB-GEN') return null;
-  const cfg = clone(tpl.configuration);
+  let cfg = clone(tpl.configuration);
   const link = tpl.links[beh.code];
+  const want = beh.code.startsWith('URB') ? 'surface_street' : 'highway';
+  let adapted = false;
+  if (!(cfg.road.types || []).includes(want)) { const e = egoFor(beh); cfg = {...cfg, road: e.road, ego: {...e.ego}}; adapted = true; }
   cfg.ego.intent = link ? link.intent : beh.intent;
   if (beh.sides) cfg.ego.sides = beh.sides;
+  if (!cfg.ego.sides || !cfg.ego.sides.length) cfg.ego.sides = ['left'];
   const rows = link ? link.rows : Object.entries(D.hire).filter(([, r]) => r.beh === beh.code && (tpl.hazards || []).includes(r.hz)).map(([id]) => id);
-  return finishDraft(beh, {title: meta.title, desc: meta.desc, cfg, perception: tpl.perception, rows, template: tpl.id, source: meta.source, tcs: meta.tcs || []}, D);
+  return finishDraft(beh, {title: meta.title, desc: meta.desc + (adapted ? ` Actors taken from ${tpl.id} (${(tpl.configuration.road.types || []).join(', ')}) and placed on a ${want.replace('_', ' ')} road for ${beh.code}.` : ''), cfg, perception: tpl.perception, rows, template: tpl.id, source: meta.source, tcs: meta.tcs || []}, D);
 }
 function finishDraft(beh, x, D){
   const errs = validate(x.cfg);
@@ -147,13 +151,21 @@ export function hireCombos(beh, D){
 /* ---------- text matcher (English and French) -> template scenario ---------- */
 const N = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’']/g, ' ');
 const TEXT_RULES = [
+  [/(no driver present)/, null, []], [/(non\W*incident|non.?collision|vehicle failure)/, null, ['FB-01', 'FB-02']], [/(control loss|loss of control)/, null, ['RD-12', 'RD-13', 'LC-RD-07']],
+  [/(road edge departure|lane departure|run.?off)/, null, ['RD-09', 'LC-RD-06']], [/(running red light|red light)/, null, ['URB-02']], [/(running stop sign|stop sign|all.?way stop)/, null, ['URB-03']],
+  [/(backing|reversing|reverse)/, null, ['RMP-10', 'HUB-03']], [/(ltap|left turn across|turning left)/, null, ['URB-04']], [/(crossing paths|interceptor|junction|intersection)/, null, ['URB-07', 'URB-02']],
+  [/(turning right)/, null, ['URB-05', 'URB-06']], [/(turning|turns)/, /(same direction|ahead)/, ['URB-16']], [/(parking)/, null, ['URB-11', 'URB-12']],
+  [/(lead vehicle accelerating|lead accelerates)/, null, ['LV-06']], [/(lead vehicle stopped|stopped lead)/, null, ['LV-05']], [/(lower constant speed|slower lead)/, null, ['LV-02']],
+  [/(lead vehicle decelerating)/, null, ['LV-03', 'LV-04']], [/(following vehicle|tailgat)/, null, ['AB-02', 'LC-CUR-03']], [/(evasive)/, null, ['FB-05', 'FB-06', 'LC-CUR-02']],
+  [/(lane hugger|hugs|close to the lane marking|pres du marquage)/, null, ['ADJ-06']], [/(changing lanes|lane change)/, /(same direction|vehicle)/, ['LC-NOM-02', 'CI-01']],
+  [/(oncoming|opposite direction)/, null, ['URB-15', 'AB-01']], [/^\s*lead vehicle\b/, null, ['LV-02', 'LV-03']], [/(stationary objects|objets? stationnaires?)/, null, ['OBJ-02', 'OBJ-01']],
   [/(shoulder|accotement)/, /(police|ambulance|fire|emv|tow|lights)/, ['LC-OOD-01', 'EMV-04']], [/(shoulder|accotement)/, /(stopped|disabled|broken|parked|arrete|panne)/, ['LC-REF-01', 'OBJ-03']],
   [/(emv|emergency vehicle|ambulance|police|fire truck|pompier|urgence)/, /(approach|behind|siren|derriere)/, ['LC-OOD-02', 'EMV-03']], [/(emv|emergency vehicle|ambulance|police|fire truck|urgence)/, null, ['EMV-05', 'EMV-06']],
   [/brake.?check/, null, ['CI-07']], [/(cut.?in|cuts in|rabat)/, /(two|deux|platoon|convoy)/, ['CI-08']], [/(cut.?in|cuts in|rabat)/, /(right|droite)/, ['CI-03']],
   [/(cut.?in|cuts in|rabat)/, /(truck|semi|trailer|camion)/, ['CI-05']], [/(cut.?in|cuts in|rabat)/, /(short|tight|close|serre)/, ['CI-02']], [/(cut.?in|cuts in|rabat|merging vehicle)/, null, ['CI-01', 'CI-06']],
   [/(cut.?out|cuts out)/, /(reveal|stopped|obstacle)/, ['LC-CUR-02']], [/(cut.?out|cuts out)/, null, ['LV-11']],
-  [/(marking|marquage|lane line|edge line)/, null, ['LC-RD-06', 'RD-09']], [/(wrong.?way|contresens|opposite direction|oncoming)/, null, ['AB-01']], [/(crash|accident)/, null, ['LC-OOD-04']],
-  [/(animal|deer|cerf|cattle|livestock)/, null, ['OBJ-04']], [/(pedestrian|pieton|person|worker|people|vru)/, null, ['OBJ-05']], [/(cyclist|bicycle|bike|velo)/, null, ['URB-10']],
+  [/(cyclist|bicycle|bike|velo|pedalcycl)/, null, ['URB-10']], [/(animal|deer|cerf|cattle|livestock)/, null, ['OBJ-04']], [/(pedestrian|pieton|person|worker|people|vru)/, null, ['OBJ-05']],
+  [/(marking|marquage|lane line|edge line)/, null, ['LC-RD-06', 'RD-09']], [/(wrong.?way|contresens|opposite direction|oncoming)/, null, ['AB-01']], [/(crash scene|accident scene|crash site|responders)/, null, ['LC-OOD-04']],
   [/(debris|tire|pneu|object|objet|cargo|fod|obstacle)/, /(sudden|fall|late)/, ['OBJ-06']], [/(debris|tire|pneu|small)/, null, ['OBJ-01', 'LC-OOD-03']], [/(cargo|object|objet|obstacle|fod)/, null, ['OBJ-02', 'LC-OOD-03']],
   [/(lane drop|lane end|fin de voie|merge at lane end)/, null, ['LC-RD-01']], [/(work zone|construction|cone|travaux|closure)/, null, ['LC-RD-02']], [/(weav)/, null, ['LC-RD-03', 'RMP-13']],
   [/(on.?ramp|merge|merging|entrance|acceleration lane)/, null, ['RMP-01', 'LC-RD-05', 'CI-06']], [/(off.?ramp|exit|sortie)/, null, ['LC-RD-04', 'RMP-11', 'RMP-06']],
@@ -168,10 +180,10 @@ const TEXT_RULES = [
   [/(lane change|changes lane|overtak)/, null, ['LC-NOM-02', 'LC-NOM-01']], [/(free road|open road|no traffic)/, null, ['LV-01']],
 ];
 export function matchTemplate(text, beh, D){
-  const t = N(text);
+  const t = N(text).replace(/\b(crash|collision)\b/g, ' ');
   for (const [a, b, ids] of TEXT_RULES) if (a.test(t) && (!b || b.test(t))) {
     const cands = ids.map(id => D.scenarios.find(s => s.id === id)).filter(Boolean);
-    return cands.find(s => s.links[beh.code] && s.generable) || cands.find(s => s.generable) || null;
+    return cands.find(s => s.links[beh.code] && s.generable) || cands.find(s => s.generable) || cands[0] || null;
   }
   return null;
 }
