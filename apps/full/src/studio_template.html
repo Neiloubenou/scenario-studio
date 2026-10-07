@@ -1,0 +1,573 @@
+<title>Scenario Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: three working columns (behaviors | abstract catalogue | abstract detail + generator), road-sign green accent, lane-marking amber for road drawings. */
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --surface-2:#F6F8F7; --ink:#14201B; --muted:#56655E; --line:#D3DCD7;
+  --accent:#0A6B46; --accent-ink:#FFFFFF; --accent-soft:#DDEFE6;
+  --ok:#1C7A45; --ok-soft:#DCF1E3; --warn:#9A5A00; --warn-soft:#FBEBCB; --crit:#B3261E; --crit-soft:#F9DEDC; --info:#2D5DA8; --info-soft:#DEE7F6;
+  --asphalt:#39413E; --marking:#F4F4F0; --lane-yellow:#E8B417; --car:#5B8BD6; --car-line:#2C4F8C; --sdt:#ECEFEE; --sdt-line:#7B8A84; --obj:#E07B39; --emv:#C8423A; --road-label:#FFFFFF;
+  --f-display:"Overpass","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Overpass",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:8px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1412; --surface:#161E1B; --surface-2:#1B2522; --ink:#E3EAE6; --muted:#97A69F; --line:#2B3833;
+  --accent:#3DB57F; --accent-ink:#06130D; --accent-soft:#173828;
+  --ok:#55C487; --ok-soft:#16301F; --warn:#E3A93C; --warn-soft:#3A2C10; --crit:#F08A80; --crit-soft:#3D1A17; --info:#86A9E6; --info-soft:#1B2840;
+  --asphalt:#2A312E; --marking:#D9DCD8; --lane-yellow:#D9A514; --car:#6E98DC; --car-line:#A9C3EE; --sdt:#C9D0CC; --sdt-line:#8E9C95; --obj:#E58C4F; --emv:#E0665E; --road-label:#FFFFFF;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1412; --surface:#161E1B; --surface-2:#1B2522; --ink:#E3EAE6; --muted:#97A69F; --line:#2B3833;
+  --accent:#3DB57F; --accent-ink:#06130D; --accent-soft:#173828;
+  --ok:#55C487; --ok-soft:#16301F; --warn:#E3A93C; --warn-soft:#3A2C10; --crit:#F08A80; --crit-soft:#3D1A17; --info:#86A9E6; --info-soft:#1B2840;
+  --asphalt:#2A312E; --marking:#D9DCD8; --lane-yellow:#D9A514; --car:#6E98DC; --car-line:#A9C3EE; --sdt:#C9D0CC; --sdt-line:#8E9C95; --obj:#E58C4F; --emv:#E0665E; --road-label:#FFFFFF;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:0 32px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-size:12.5px}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Header */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-block:18px 14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.shield{width:38px;height:38px;border-radius:7px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.02em;border:2px solid var(--surface);box-shadow:0 0 0 1.5px var(--accent)}
+.brand h1{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:var(--f-display);font-size:12.5px;font-weight:600;color:var(--muted)}
+.chain b{color:var(--ink);font-weight:700}
+.chain .arr{color:var(--accent)}
+.top .actions{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.small{padding:4px 9px;font-size:12px}
+
+/* Workspace */
+.work{display:grid;grid-template-columns:230px 300px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1100px){.work{grid-template-columns:220px minmax(0,1fr)}.col-detail{grid-column:1 / -1}}
+@media (max-width:700px){.work{grid-template-columns:minmax(0,1fr)}}
+.col{min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.col-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:12px 14px 8px}
+.col-head h2{font-size:15px;font-weight:700}
+
+/* Behaviors */
+.uc{padding:4px 0 8px}
+.uc .eyebrow{padding:8px 14px 4px;display:block}
+.beh{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:none;padding:7px 14px;cursor:pointer;border-left:3px solid transparent}
+.beh:hover{background:var(--surface-2)}
+.beh[aria-current="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.beh .nm{flex:1;min-width:0;font-size:13.5px}
+.beh .ddt{font-family:var(--f-mono);font-size:10.5px;color:var(--muted)}
+.count{font-family:var(--f-mono);font-size:11.5px;min-width:24px;text-align:center;border-radius:10px;padding:1px 6px;background:var(--surface-2);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.count.has{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* Abstract list */
+.filters{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.filters select{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:4px 6px;font-size:12.5px;max-width:100%}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;user-select:none}
+.alist{display:flex;flex-direction:column;max-height:calc(100vh - 160px);overflow:auto;border-top:1px solid var(--line)}
+.acard{display:grid;gap:4px;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:10px 14px;cursor:pointer;border-left:3px solid transparent}
+.acard:hover{background:var(--surface-2)}
+.acard[aria-current="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.acard .row1{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.acard .id{font-family:var(--f-mono);font-size:11.5px;font-weight:500}
+.acard .ttl{font-size:13px;line-height:1.35}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px;border:1px solid var(--line);color:var(--muted);background:var(--surface);white-space:nowrap}
+.chip.fam{font-family:var(--f-mono);font-weight:500}
+.chip.miro{border-color:var(--lane-yellow);color:var(--ink);background:color-mix(in srgb,var(--lane-yellow) 18%,var(--surface))}
+.chip.perc{border-color:var(--info);color:var(--info);background:var(--info-soft)}
+.chip.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.chip.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.chip.crit{border-color:var(--crit);color:var(--crit);background:var(--crit-soft)}
+.chip.info{border-color:var(--info);color:var(--info);background:var(--info-soft)}
+.empty{padding:22px 14px;display:grid;gap:10px;color:var(--muted)}
+.empty strong{color:var(--ink);font-family:var(--f-display)}
+
+/* Detail */
+.detail-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);display:grid;gap:6px}
+.detail-head h2{font-size:20px;font-weight:700;line-height:1.2}
+.detail-head .osc{font-family:var(--f-mono);font-size:12.5px;color:var(--accent);overflow-wrap:anywhere}
+.detail-head p{margin:0;max-width:72ch}
+.trace{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.scene{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:16px 18px}
+@media (max-width:620px){.scene{grid-template-columns:minmax(0,1fr)}}
+.road{width:100%;max-width:240px;height:auto;display:block;border-radius:6px}
+.facts{display:grid;gap:10px;min-width:0;align-content:start}
+.fact{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;font-size:13px}
+.fact dt{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.fact dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.tabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:0;background:none;padding:10px 12px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabbody{padding:14px 18px 18px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);position:sticky;top:0;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sev{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:500;border-radius:3px;padding:0 5px;border:1px solid var(--line)}
+.sev.s3,.sev.c3{border-color:var(--crit);color:var(--crit)}
+.sev.e4{border-color:var(--crit);color:var(--crit)}
+.sev.s2,.sev.c2,.sev.e3{border-color:var(--warn);color:var(--warn)}
+.rule{border-left:3px solid var(--accent);padding:8px 12px;background:var(--surface-2);border-radius:0 6px 6px 0;max-width:80ch;margin:0 0 14px}
+ul.clean{margin:0;padding-left:18px;display:grid;gap:4px}
+
+/* Generator */
+.gen{margin-top:16px}
+.gen-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.gen-head h2{font-size:16px;font-weight:700}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;padding:14px 18px;border-bottom:1px solid var(--line)}
+.field{display:grid;gap:4px;font-size:12px}
+.field label{font-family:var(--f-display);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.field select,.field input{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:6px 8px;width:120px}
+.estimate{font-size:12.5px;color:var(--muted);align-self:center}
+.estimate b{color:var(--ink);font-family:var(--f-mono)}
+.summary{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px;align-items:center}
+.stat{display:flex;align-items:baseline;gap:6px;border:1px solid var(--line);border-radius:6px;padding:6px 10px;background:var(--surface-2)}
+.stat b{font-family:var(--f-mono);font-size:16px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-left:auto}
+.seg button{border:0;background:var(--surface);padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.results{padding:0 18px 12px}
+.results tbody tr{cursor:pointer}
+.results tbody tr:hover td{background:var(--surface-2)}
+.results tbody tr[aria-selected="true"] td{background:var(--accent-soft)}
+.results .exp{min-width:300px;max-width:420px}
+.more{padding:0 18px 14px;display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--muted)}
+.osc-panel{border-top:1px solid var(--line);padding:14px 18px 18px;display:grid;gap:8px}
+.osc-panel .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+pre.code{margin:0;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:12px;line-height:1.55;max-height:360px}
+.note{font-size:12px;color:var(--muted);max-width:90ch}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:6px;font-size:13px;max-width:calc(100vw - 32px);z-index:10}
+@media (prefers-reduced-motion:no-preference){.acard,.beh,.btn{transition:background-color .12s,border-color .12s}}
+</style>
+
+<header class="top">
+  <div class="brand">
+    <div class="shield" aria-hidden="true">SS</div>
+    <div>
+      <h1>Scenario Studio</h1>
+      <div class="chain" aria-label="Chaîne du jalon 1"><b>Behavior</b><span class="arr">→</span><b>Abstract + HIRE</b><span class="arr">→</span><b>Concrete</b><span class="arr">→</span><b>OSC</b><span>· DO-Crawl I-35 South · jalon 1</span></div>
+    </div>
+  </div>
+  <div class="actions">
+    <input type="file" id="importFile" accept=".json,application/json" hidden>
+    <button class="btn" id="btnImport" type="button">Importer un catalogue (JSON)</button>
+    <button class="btn" id="btnExportCat" type="button">Exporter le catalogue (JSON)</button>
+  </div>
+</header>
+
+<main class="work">
+  <section class="col panel" aria-labelledby="hBeh">
+    <div class="col-head"><h2 id="hBeh">Behaviors</h2><span class="muted mono" id="behTotal"></span></div>
+    <div id="behList"></div>
+  </section>
+
+  <section class="col panel" aria-labelledby="hAbs">
+    <div class="col-head"><h2 id="hAbs">Scénarios abstraits</h2><span class="muted mono" id="absCount"></span></div>
+    <div class="filters">
+      <select id="famFilter" aria-label="Filtrer par famille"></select>
+      <label class="toggle"><input type="checkbox" id="perfectOnly"> Perception parfaite seulement</label>
+    </div>
+    <div class="alist" id="absList"></div>
+  </section>
+
+  <section class="col col-detail" aria-label="Détail du scénario abstrait">
+    <div class="panel" id="detail"></div>
+    <div class="panel gen" id="gen"></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script type="application/json" id="seed">/*__DATA__*/</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(() => {
+const DATA = JSON.parse(document.getElementById('seed').textContent);
+const P = DATA.parameters;
+const state = {
+  beh: DATA.behaviors.find(b => b.use_case === 'Highway' && b.name.startsWith('Lane Changes')).id,
+  abs: 'LC-NOM-02', fam: 'all', perfectOnly: false, tab: 'scene',
+  mode: 'grid', levels: 'auto', samples: 60, seed: 42,
+  concretes: [], filter: 'all', shown: 60, sel: null,
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const toast = msg => { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 3200); };
+const absOf = id => DATA.abstracts.find(a => a.id === id);
+const behOf = id => DATA.behaviors.find(b => b.id === id);
+const absForBeh = bid => DATA.abstracts.filter(a => (a.behaviors || []).includes(bid));
+const human = n => n.replace(/^sut\./, '').replace(/^sut_/, '').replace(/_/g, ' ');
+const SIDE_FR = {left: 'gauche', right: 'droite'};
+
+/* ---------- Behaviors ---------- */
+function renderBehaviors(){
+  const groups = ['Highway', 'Urban', 'Hub'];
+  $('#behTotal').textContent = DATA.behaviors.length;
+  $('#behList').innerHTML = groups.map(uc => {
+    const items = DATA.behaviors.filter(b => b.use_case === uc).map(b => {
+      const n = absForBeh(b.id).length;
+      return `<button class="beh" type="button" data-beh="${esc(b.id)}" aria-current="${b.id === state.beh}">
+        <span class="nm">${esc(b.name)}<br><span class="ddt">${esc(b.ddt)}</span></span>
+        <span class="count ${n ? 'has' : ''}">${n}</span></button>`;
+    }).join('');
+    return `<div class="uc"><span class="eyebrow">${uc}</span>${items}</div>`;
+  }).join('');
+}
+
+/* ---------- Abstract list ---------- */
+function visibleAbstracts(){
+  return absForBeh(state.beh).filter(a => (state.fam === 'all' || a.family === state.fam) && (!state.perfectOnly || !a.perception_dependent));
+}
+function renderAbstractList(){
+  const all = absForBeh(state.beh);
+  const fams = [...new Set(all.map(a => a.family))];
+  $('#famFilter').innerHTML = `<option value="all">Toutes les familles</option>` + fams.map(f => `<option value="${esc(f)}" ${f === state.fam ? 'selected' : ''}>${esc(f)} · ${esc((DATA.families[f] || {}).name || '')}</option>`).join('');
+  const list = visibleAbstracts();
+  $('#absCount').textContent = all.length ? `${list.length} / ${all.length}` : '0';
+  if (!all.length){
+    const b = behOf(state.beh);
+    $('#absList').innerHTML = `<div class="empty"><strong>Pas encore de scénario abstrait pour « ${esc(b.name)} »</strong>
+      <span>Le catalogue Lane Change est le seul rempli. Importez le catalogue de Matthieu (JSON au même format que l'export) pour alimenter ce behavior.</span>
+      <button class="btn small" type="button" data-act="import">Importer un catalogue</button></div>`;
+    return;
+  }
+  $('#absList').innerHTML = list.map(a => `<button class="acard" type="button" data-abs="${esc(a.id)}" aria-current="${a.id === state.abs}">
+      <span class="row1"><span class="id">${esc(a.id)}</span><span class="chip fam">${esc(a.family)}</span>
+      ${a.torc_ref ? `<span class="chip miro">${esc(a.torc_ref.replace("Miro ", "Miro "))}</span>` : ''}
+      ${a.perception_dependent ? `<span class="chip perc">perception</span>` : ''}</span>
+      <span class="ttl">${esc(human(a.name))}</span></button>`).join('') || `<div class="empty">Aucun abstract ne correspond aux filtres.</div>`;
+}
+
+/* ---------- Road drawing (Torc Miro slot grid) ---------- */
+function roadSVG(a){
+  const LW = 46, X0 = 14, lanes = 4, W = X0 * 2 + LW * lanes + 26, H = 330;
+  const cx = i => X0 + LW * i + LW / 2;
+  const slots = new Set(a.slots || []);
+  const car = (x, y, label, kind) => {
+    const fill = kind === 'emv' ? 'var(--emv)' : 'var(--car)';
+    return `<g><rect x="${x - 11}" y="${y - 18}" width="22" height="36" rx="5" fill="${fill}" stroke="var(--car-line)" stroke-width="1"/>
+      <rect x="${x - 7}" y="${y - 12}" width="14" height="8" rx="2" fill="var(--asphalt)" opacity=".55"/>
+      <text x="${x}" y="${y + 9}" text-anchor="middle" font-family="var(--f-display)" font-weight="800" font-size="12" fill="var(--road-label)">${label}</text></g>`;
+  };
+  const pos = {A: [2, 52], B: [1, 64], C: [2, 292], D: [1, 280], E: [0, 214], F: [0, 70], G: [3, 176]};
+  let s = `<svg class="road" viewBox="0 0 ${W} ${H}" role="img" aria-label="Disposition des acteurs pour ${esc(a.id)}">
+    <rect x="0" y="0" width="${W}" height="${H}" fill="var(--asphalt)"/>
+    <rect x="${X0 + LW * lanes + 4}" y="0" width="22" height="${H}" fill="var(--asphalt)" opacity=".7"/>
+    <line x1="${X0}" y1="0" x2="${X0}" y2="${H}" stroke="var(--lane-yellow)" stroke-width="3"/>
+    <line x1="${X0 + LW * lanes}" y1="0" x2="${X0 + LW * lanes}" y2="${H}" stroke="var(--marking)" stroke-width="2.5"/>`;
+  for (let i = 1; i < lanes; i++) s += `<line x1="${X0 + LW * i}" y1="0" x2="${X0 + LW * i}" y2="${H}" stroke="var(--marking)" stroke-width="2" stroke-dasharray="16 14"/>`;
+  s += `<text x="${cx(1)}" y="${H - 6}" text-anchor="middle" font-family="var(--f-display)" font-size="9" font-weight="700" fill="var(--marking)" opacity=".85">CIBLE</text>
+        <text x="${cx(2)}" y="${H - 6}" text-anchor="middle" font-family="var(--f-display)" font-size="9" font-weight="700" fill="var(--marking)" opacity=".85">ORIGINE</text>`;
+  // SDT path
+  s += `<path d="M${cx(2)} 118 C ${cx(2)} 92, ${cx(1)} 104, ${cx(1)} 64" fill="none" stroke="var(--lane-yellow)" stroke-width="2" stroke-dasharray="4 3"/>
+        <path d="M${cx(1) - 5} 72 L${cx(1)} 62 L${cx(1) + 5} 72" fill="none" stroke="var(--lane-yellow)" stroke-width="2"/>`;
+  // SDT tractor + trailer
+  s += `<g><rect x="${cx(2) - 13}" y="122" width="26" height="22" rx="4" fill="var(--sdt)" stroke="var(--sdt-line)"/>
+        <rect x="${cx(2) - 13}" y="147" width="26" height="96" rx="2" fill="var(--sdt)" stroke="var(--sdt-line)"/>
+        <text x="${cx(2)}" y="200" text-anchor="middle" font-family="var(--f-display)" font-weight="800" font-size="11" fill="var(--asphalt)" transform="rotate(-90 ${cx(2)} 196)">SDT</text></g>`;
+  for (const k of ['A', 'B', 'C', 'D', 'E', 'F', 'G']) if (slots.has(k)) {
+    const [l, y] = pos[k];
+    s += car(cx(l), y, k, a.id === 'LC-OOD-02' && k === 'C' ? 'emv' : 'car');
+  }
+  if (slots.has('O')) s += `<g><rect x="${cx(a.id === 'LC-CUR-02' ? 2 : 1) - 10}" y="${a.id === 'LC-CUR-02' ? 14 : 18}" width="20" height="16" rx="3" fill="var(--obj)"/><text x="${cx(a.id === 'LC-CUR-02' ? 2 : 1)}" y="${a.id === 'LC-CUR-02' ? 26 : 30}" text-anchor="middle" font-family="var(--f-display)" font-weight="800" font-size="10" fill="var(--road-label)">O</text></g>`;
+  if (slots.has('S')) s += `<g><rect x="${X0 + LW * lanes + 5}" y="40" width="20" height="34" rx="4" fill="var(--emv)"/><text x="${X0 + LW * lanes + 15}" y="61" text-anchor="middle" font-family="var(--f-display)" font-weight="800" font-size="11" fill="var(--road-label)">S</text></g>`;
+  return s + `</svg>`;
+}
+
+/* ---------- Detail ---------- */
+function paramSpec(a, p){ return Object.assign({}, P[p.key] || {label: p.key, kind: 'enum', values: ['?'], unknown: true}, p); }
+function rangeText(sp){
+  if (sp.kind === 'num') return `${fmt(sp.min)} … ${fmt(sp.max)} ${sp.unit || ''}`.trim();
+  return (sp.values || []).join(', ');
+}
+function fmt(v){ if (typeof v !== 'number') return v; if (Math.abs(v) > 0 && Math.abs(v) < 0.01) return v.toExponential(1); return Number.isInteger(v) ? String(v) : String(Math.round(v * 100) / 100); }
+const STATUS = {ODD: ['ok', 'ODD I-35'], proposed: ['warn', 'proposé'], GAP: ['crit', 'GAP données']};
+
+function renderDetail(){
+  const a = absOf(state.abs);
+  const el = $('#detail');
+  if (!a || !(a.behaviors || []).includes(state.beh)) { el.innerHTML = `<div class="empty"><strong>Choisissez un behavior puis un scénario abstrait.</strong></div>`; return; }
+  const b = behOf(state.beh);
+  const hire = (a.hire || []).map(id => DATA.hire[id]).filter(Boolean);
+  const tabs = [['scene', 'Scénario'], ['params', `Paramètres (${a.parameters.length})`], ['hire', `HIRE (${hire.length})`], ['tcfi', `TC & FI (${(a.tcs || []).length}/${(a.fis || []).length})`], ['rule', 'Règle & KPIs']];
+  const hz = [...new Set(hire.map(h => h.hz))].sort();
+  let body = '';
+  if (state.tab === 'scene') body = `<div class="scene" style="padding:0">${roadSVG(a)}<dl class="facts">
+      <div class="fact"><dt>Acteurs</dt><dd>${esc(a.actors)}</dd></div>
+      <div class="fact"><dt>Phases</dt><dd class="mono">${esc(a.phases)}</dd></div>
+      <div class="fact"><dt>ODD statique</dt><dd>${esc(a.static_odd)}</dd></div>
+      <div class="fact"><dt>Variantes</dt><dd>${esc(a.variants)}</dd></div>
+      <div class="fact"><dt>Type</dt><dd>${esc(a.lc_type)} · ${esc(a.odd_status)}</dd></div>
+      <div class="fact"><dt>Test</dt><dd>${esc(a.env)}</dd></div>
+      ${a.foretellix ? `<div class="fact"><dt>Foretellix</dt><dd>${esc(a.foretellix)}</dd></div>` : ''}
+    </dl></div>`;
+  if (state.tab === 'params') body = `<div class="tablewrap"><table><thead><tr><th>Clé</th><th>Paramètre</th><th>Plage logique</th><th>Statut</th><th>Source</th></tr></thead><tbody>
+    ${a.parameters.map(p => { const sp = paramSpec(a, p); const st = STATUS[sp.status] || ['', sp.unknown ? 'inconnu' : '']; return `<tr><td class="mono">${esc(p.key)}</td><td>${esc(sp.label)}</td><td class="num">${esc(rangeText(sp))}</td><td><span class="chip ${st[0]}">${st[1]}</span></td><td class="muted">${esc(sp.src || '')}</td></tr>`; }).join('')}
+    </tbody></table></div><p class="note">Statut « GAP » : pas encore de données L4 sur I-35, plage proposée par défaut. Les modificateurs météo ne sont pas des paramètres du jalon 1 (perception parfaite dans TorSim).</p>`;
+  if (state.tab === 'hire') body = hire.length ? `<p class="note" style="margin:0 0 10px">Lignes du HIRE Highway Lane Change liées par leur contexte de danger : ${a.hazard_contexts.map(esc).join(', ')}. Hazards : ${hz.join(', ')}.</p>
+    <div class="tablewrap"><table><thead><tr><th>Ligne HIRE</th><th>Malfunction</th><th>Contexte</th><th>Hazard</th><th>S</th><th>E</th><th>C</th></tr></thead><tbody>
+    ${hire.map(h => `<tr><td class="mono" title="${esc(h.ev)}">${esc(h.id.replace('HW_ Lane Changes / Overtaking_', 'HW_LC_'))}</td><td>${esc(h.mal)}</td><td class="muted">${esc(h.ctx)}</td><td class="num">${esc(h.hz)}</td><td><span class="sev ${esc((h.S || '').toLowerCase())}">${esc(h.S)}</span></td><td><span class="sev ${esc((h.E || '').toLowerCase())}">${esc(h.E)}</span></td><td><span class="sev ${esc((h.C || '').toLowerCase())}">${esc(h.C)}</span></td></tr>`).join('')}
+    </tbody></table></div>` : `<div class="empty">Aucune ligne HIRE liée à cet abstract.</div>`;
+  if (state.tab === 'tcfi') body = `<div class="tablewrap"><table><thead><tr><th>TC</th><th>Couche</th><th>Condition déclenchante</th><th>Hazards</th></tr></thead><tbody>
+    ${(a.tcs || []).map(t => { const x = DATA.tc[t] || {}; return `<tr><td class="mono">${esc(t)}</td><td class="num">${esc(x.layer)}</td><td>${esc(x.tc)}</td><td class="num">${esc(x.haz)}</td></tr>`; }).join('')}
+    </tbody></table></div>
+    <div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>FI</th><th>Bloc</th><th>Insuffisance fonctionnelle</th></tr></thead><tbody>
+    ${(a.fis || []).map(f => { const x = DATA.fi[f] || {}; return `<tr><td class="mono">${esc(f)}</td><td>${esc(x.block)}</td><td>${esc(x.name)}</td></tr>`; }).join('') || `<tr><td colspan="3" class="muted">Aucune FI reliée.</td></tr>`}
+    </tbody></table></div><p class="note">TC et FI sont affichés pour la traçabilité ; ils n'entrent pas dans la génération du jalon 1 (extension perception plus tard).</p>`;
+  if (state.tab === 'rule') body = `<p class="eyebrow" style="margin:0 0 6px">Comportement voulu (rule book)</p><p class="rule">${esc(a.rule)}</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+      <div><p class="eyebrow" style="margin:0 0 6px">Tâches SDT nécessaires</p><ul class="clean">${(a.tasks || []).map(t => `<li><span class="mono">${esc(t)}</span> ${esc((DATA.tasks[t] || {}).name || '')}</li>`).join('')}</ul></div>
+      <div><p class="eyebrow" style="margin:0 0 6px">KPIs et checkers</p><ul class="clean">${(a.kpis || []).map(k => { const x = DATA.kpis[k] || {}; return `<li><span class="mono">${esc(x.metric || k)}</span> <span class="muted">· ${esc(x.cat || '')} · seuil : ${esc(x.threshold || 'TBD')}</span></li>`; }).join('')}</ul></div>
+    </div>`;
+  el.innerHTML = `<div class="detail-head">
+      <div class="trace"><span class="chip">${esc(b.use_case)}</span><span>${esc(b.name)}</span><span>›</span><span class="chip fam">${esc(a.family)}</span><span>${esc((DATA.families[a.family] || {}).name || '')}</span></div>
+      <h2>${esc(a.id)} · ${esc(human(a.name))}</h2>
+      <div class="osc">scenario ${esc(a.name)} · v${esc(a.version || 1)}</div>
+      <p>${esc(a.description)}</p>
+      <div class="trace">${a.torc_ref ? `<span class="chip miro">${esc(a.torc_ref)}</span>` : ''}${a.perception_dependent ? '<span class="chip perc">dépend de la perception · hors jalon 1</span>' : '<span class="chip ok">perception parfaite OK</span>'}<span class="chip">${esc(a.status || 'PROPOSED')}</span><span>source : ${esc(a.source || '')}</span></div>
+    </div>
+    <div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${k === state.tab}">${l}</button>`).join('')}</div>
+    <div class="tabbody">${body}</div>`;
+}
+
+/* ---------- Generation ---------- */
+function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function round(v, sp){ if (sp.integer || sp.unit === 'mph' || sp.unit === 'm' || sp.unit === 'veh/h' || sp.unit === '%') return Math.round(v); if (Math.abs(sp.max) < 0.01) return Math.round(v * 1e5) / 1e5; return Math.round(v * 100) / 100; }
+function levelsOf(sp){
+  if (sp.kind !== 'num') return sp.values;
+  const L = state.levels === 'auto' ? (sp.levels || 3) : Number(state.levels);
+  if (L <= 1) return [round((sp.min + sp.max) / 2, sp)];
+  return [...new Set(Array.from({length: L}, (_, i) => round(sp.min + (sp.max - sp.min) * i / (L - 1), sp)))];
+}
+function gridSize(a){ return a.parameters.reduce((n, p) => n * levelsOf(paramSpec(a, p)).length, 1); }
+const MPS = 0.44704, HW_MIN = 1.0, DECEL_MAX = 3.0, PONR = 50, TRUCK_DECEL = 4.0;
+
+function checkRules(a, v){
+  const r = [];
+  const n = Number(v.lane_count), side = v.lc_side, o = v.origin_lane;
+  if (o === 'middle' && n < 3) r.push(`Voie du milieu impossible avec ${n} voies`);
+  else {
+    const avail = o === 'rightmost' ? {left: n - 1, right: 0} : o === 'leftmost' ? {left: 0, right: n - 1} : {left: n - 2, right: 1};
+    const need = a.side_lanes || 1;
+    if (avail[side] < need) r.push(need > 1 ? `Pas de voie au-delà de la cible à ${SIDE_FR[side]} (${n} voies, départ ${o})` : `Pas de voie cible à ${SIDE_FR[side]} (${n} voies, départ ${o})`);
+  }
+  for (const [k, lbl] of [['d_rel_speed', 'D'], ['a_rel_speed', 'A'], ['closing_speed', 'D'], ['ramp_rel_speed', 'le véhicule de bretelle']]) if (k in v) {
+    const sp = v.sdt_speed + v[k];
+    if (sp < 5 || sp > 90) r.push(`Vitesse de ${lbl} = ${sp} mph, hors plage physique`);
+  }
+  if ('distance_to_mandatory' in v) { const need = Math.round(v.sdt_speed * MPS * 8); if (v.distance_to_mandatory < need) r.push(`${v.distance_to_mandatory} m avant le point obligatoire, il en faut ${need} à ${v.sdt_speed} mph`); }
+  if ('curvature' in v) { const al = (v.sdt_speed * MPS) ** 2 * v.curvature; if (al > 2.5) r.push(`Virage non roulable à ${v.sdt_speed} mph (accélération latérale ${al.toFixed(1)} m/s²)`); }
+  if ('reveal_distance' in v && v.reveal_distance < 15) r.push('Obstacle découvert trop tard pour être physique');
+  return r;
+}
+function gapOracle(v, rel){
+  const sp = v.sdt_speed * MPS, c = Math.max(rel * MPS, 0), fg = v.front_gap ?? Infinity, rg = v.rear_gap ?? Infinity;
+  const dr = rg * sp, a = c > 0 ? (c * c) / (2 * Math.max(dr - HW_MIN * sp, 0.5)) : 0;
+  const why = [];
+  if (fg < HW_MIN) why.push(`gap avant ${fg} s < ${HW_MIN} s`);
+  if (rg < HW_MIN) why.push(`gap arrière ${rg} s < ${HW_MIN} s`);
+  if (a > DECEL_MAX) why.push(`D devrait freiner à ${a.toFixed(1)} m/s²`);
+  return why.length ? {cat: 'hold', txt: 'Attendre, ne pas changer de voie', why: why.join(' ; ')} : {cat: 'go', txt: 'Changer de voie', why: c > 0 ? `décélération imposée à D ≈ ${a.toFixed(1)} m/s²` : 'gaps suffisants'};
+}
+function oracle(a, v){
+  switch (a.oracle){
+    case 'free': return {cat: 'go', txt: 'Changer de voie', why: 'voie cible libre'};
+    case 'gap': return gapOracle(v, v.d_rel_speed ?? 0);
+    case 'gap_closing': return gapOracle(v, v.closing_speed ?? 0);
+    case 'closing_gap': { const extra = v.d_accel * Math.max(6 - v.d_reaction, 0) / MPS; const o = gapOracle(v, extra); return o.cat === 'go' ? {cat: 'go', txt: 'Terminer en surveillant D', why: o.why} : {cat: 'hold', txt: 'Annuler et rester dans la voie', why: o.why}; }
+    case 'merge': {
+      const ov = Math.abs(v.e_long_offset) < 25 && v.e_lc_start <= 1.5;
+      if (v.e_variant === 'accelerate' && v.e_long_offset > 10) return {cat: 'hold', txt: 'Laisser passer E, puis changer', why: 'E passe devant'};
+      if (v.e_variant === 'decelerate' && v.e_long_offset < -10) return {cat: 'go', txt: 'Changer de voie, E reste derrière', why: 'E ralentit derrière le SDT'};
+      return ov ? {cat: 'hold', txt: 'Céder : rester ou revenir', why: `E à ${v.e_long_offset} m, départ ${v.e_lc_start} s${v.e_variant === 'no_signal' ? ', sans clignotant' : ''}`} : {cat: 'go', txt: 'Changer de voie en surveillant E', why: 'pas de recouvrement'};
+    }
+    case 'lead_brake': {
+      const t = v.phase_at_trigger === 'prepare' ? 'Ne pas démarrer, garder l’écart à A' : v.phase_at_trigger === 'early_execute' ? 'Revenir et freiner' : 'Terminer et freiner derrière B';
+      return {cat: v.phase_at_trigger === 'late_execute' ? 'go' : 'hold', txt: t, why: v.actor_decel >= 5 && v.rear_gap < 1.5 ? 'freinage fort avec D proche : risque H3' : `B freine à ${v.actor_decel} m/s²`};
+    }
+    case 'alongside': return v.d_pos_trailer > -27 && v.d_pos_trailer < 4 ? {cat: 'hold', txt: 'Attendre que la voie soit libre sur toute la longueur', why: `D à ${v.d_pos_trailer} m le long de l’ensemble`} : {cat: 'go', txt: 'Changer de voie', why: 'D hors de l’ensemble'};
+    case 'origin_brake': return v.target_lane_free === 'yes' && v.phase_at_trigger !== 'prepare' ? {cat: 'go', txt: 'Terminer le changement de voie', why: 'voie cible libre'} : {cat: 'hold', txt: 'Freiner dans la voie d’origine', why: v.target_lane_free === 'no' ? 'voie cible occupée' : 'manœuvre pas commencée'};
+    case 'evasive': { const sp = v.sdt_speed * MPS, ds = sp * 1.0 + sp * sp / (2 * TRUCK_DECEL); if (v.reveal_distance >= ds) return {cat: 'hold', txt: 'Freiner dans la voie', why: `arrêt possible en ${Math.round(ds)} m`}; return v.target_lane_free === 'yes' ? {cat: 'go', txt: 'Évitement par changement de voie', why: `arrêt impossible (${Math.round(ds)} m nécessaires)`} : {cat: 'other', txt: 'Freinage d’urgence, cas limite à analyser', why: `arrêt impossible (${Math.round(ds)} m) et voie cible occupée`}; }
+    case 'mandatory': { const sp = v.sdt_speed * MPS; const short = v.distance_to_mandatory < sp * 15; return {cat: 'go', txt: short ? 'Ralentir pour créer un gap, puis changer' : 'Changer de voie avant le point obligatoire', why: `${v.distance_to_mandatory} m${v.traffic_volume >= 1500 ? ', trafic dense' : ''}`}; }
+    case 'courtesy': return v.target_lane_free === 'yes' ? {cat: 'go', txt: 'Se décaler à gauche pour laisser l’insertion', why: 'voie de gauche libre'} : {cat: 'hold', txt: 'Garder la voie, adapter la vitesse', why: 'voie de gauche occupée'};
+    case 'abort': return v.lateral_progress < PONR ? {cat: 'hold', txt: 'Annuler et revenir dans la voie d’origine', why: `avancement ${v.lateral_progress} % < ${PONR} %`} : {cat: 'go', txt: 'Terminer le changement de voie', why: `avancement ${v.lateral_progress} % ≥ ${PONR} %`};
+    case 'fallback': return {cat: 'other', txt: `${v.lateral_progress < PONR ? 'Revenir' : 'Terminer'}, puis ${v.shoulder_present === 'yes' ? 'MRM vers l’accotement' : 'arrêt contrôlé en voie'}`, why: v.degradation_type};
+    case 'move_over': return v.target_lane_free === 'yes' ? {cat: 'go', txt: 'Se décaler à gauche (TX TRC 545.157)', why: 'voie de gauche libre'} : {cat: 'hold', txt: 'Ralentir à 20 mph sous la limite', why: 'voie de gauche occupée'};
+    default: return {cat: 'other', txt: 'Voir la règle de l’abstract', why: 'pas d’oracle chiffré au jalon 1'};
+  }
+}
+function generate(){
+  const a = absOf(state.abs); if (!a) return;
+  const specs = a.parameters.map(p => [p.key, paramSpec(a, p)]);
+  let combos = [];
+  if (state.mode === 'grid'){
+    const n = gridSize(a);
+    if (n > 20000){ toast(`${n.toLocaleString('fr-FR')} combinaisons : passez en tirage aléatoire ou réduisez les niveaux.`); return; }
+    combos = [{}];
+    for (const [k, sp] of specs) { const vals = levelsOf(sp); const next = []; for (const c of combos) for (const x of vals) next.push({...c, [k]: x}); combos = next; }
+  } else {
+    const rnd = mulberry32(Number(state.seed) || 1);
+    for (let i = 0; i < Math.min(Number(state.samples) || 1, 5000); i++){
+      const c = {}; for (const [k, sp] of specs) c[k] = sp.kind === 'num' ? round(sp.min + (sp.max - sp.min) * rnd(), sp) : sp.values[Math.floor(rnd() * sp.values.length)];
+      combos.push(c);
+    }
+  }
+  state.concretes = combos.map((v, i) => {
+    const excl = checkRules(a, v);
+    return {id: `${a.id}-C${String(i + 1).padStart(4, '0')}`, values: v, excluded: excl, expected: excl.length ? null : oracle(a, v)};
+  });
+  state.genFor = a.id; state.genMode = state.mode; state.genSeed = state.seed;
+  state.shown = 60; state.sel = state.concretes.find(c => !c.excluded.length)?.id || null; state.filter = 'all';
+}
+
+function oscFor(c){
+  const a = absOf(state.genFor), b = behOf(state.beh);
+  const hire = (a.hire || []).slice(0, 6);
+  const lines = [
+    `# Scenario Studio export · pseudo OpenSCENARIO DSL 2.x (format TorSim à confirmer)`,
+    `# behavior : ${b.id} | ${b.name} (${b.use_case})`,
+    `# abstract : ${a.id} v${a.version || 1} | ${a.name}`,
+    `# concrete : ${c.id} | mode=${state.genMode}${state.genMode === 'random' ? ` seed=${state.genSeed}` : ''} | ${DATA.meta.generator}`,
+    `# hire     : ${hire.join(' ; ')}${(a.hire || []).length > 6 ? ` (+${a.hire.length - 6})` : ''}`,
+    `# expected : ${c.expected ? c.expected.txt + ' (' + c.expected.why + ')' : 'EXCLU'} [oracle candidat, seuils à valider]`,
+    ``,
+    `scenario ${a.name}_${c.id.split('-').pop().toLowerCase()}:`,
+  ];
+  for (const [k, val] of Object.entries(c.values)) { const sp = P[k] || {}; const u = sp.unit ? ({'m/s²': 'mps2', 'veh/h': ' veh_per_h', '%': ' percent', '1/m': ' per_m'}[sp.unit] ?? sp.unit) : ''; lines.push(`    keep(${k} == ${typeof val === 'string' ? val : val + u})`); }
+  lines.push(`    do serial:`);
+  a.phases.split('>').map(s => s.trim()).forEach(ph => lines.push(`        ${ph.replace(/[^a-zA-Z0-9_|() ]/g, '').replace(/\s*\|\|\s*/g, '_and_').replace(/[()\s]+/g, '_').replace(/_+$/, '')}: sut.car.drive()`));
+  lines.push(`    check(no_collision)`);
+  (a.kpis || []).filter(k => k !== 'K-SAF-01').forEach(k => { const x = DATA.kpis[k]; if (x) lines.push(`    record(${x.metric})   # ${k}`); });
+  return lines.join('\n');
+}
+
+function renderGen(){
+  const a = absOf(state.abs); const el = $('#gen');
+  if (!a || !(a.behaviors || []).includes(state.beh)) { el.innerHTML = ''; el.hidden = true; return; }
+  el.hidden = false;
+  const n = gridSize(a);
+  const stale = state.genFor !== a.id;
+  const cs = stale ? [] : state.concretes;
+  const valid = cs.filter(c => !c.excluded.length), excl = cs.filter(c => c.excluded.length);
+  const go = valid.filter(c => c.expected.cat === 'go').length, hold = valid.filter(c => c.expected.cat === 'hold').length, other = valid.length - go - hold;
+  const rows = cs.filter(c => state.filter === 'all' || (state.filter === 'valid' ? !c.excluded.length : c.excluded.length));
+  const keys = a.parameters.map(p => p.key);
+  const sel = cs.find(c => c.id === state.sel);
+  el.innerHTML = `<div class="gen-head"><h2>Générer les concrets</h2>
+      <span class="muted">${esc(a.id)} · ${a.parameters.length} paramètres</span>
+      ${a.perception_dependent ? '<span class="chip perc">dépend de la perception : génération possible, exécution TorSim hors jalon 1</span>' : ''}</div>
+    <div class="controls">
+      <div class="field"><label for="genMode">Mode</label><select id="genMode"><option value="grid" ${state.mode === 'grid' ? 'selected' : ''}>Grille</option><option value="random" ${state.mode === 'random' ? 'selected' : ''}>Aléatoire</option></select></div>
+      ${state.mode === 'grid'
+        ? `<div class="field"><label for="genLevels">Niveaux / param.</label><select id="genLevels">${['auto', '2', '3', '4', '5'].map(x => `<option value="${x}" ${state.levels === x ? 'selected' : ''}>${x === 'auto' ? 'par défaut' : x}</option>`).join('')}</select></div>
+           <span class="estimate"><b>${n.toLocaleString('fr-FR')}</b> combinaisons</span>`
+        : `<div class="field"><label for="genSamples">Tirages</label><input id="genSamples" type="number" min="1" max="5000" value="${esc(state.samples)}"></div>
+           <div class="field"><label for="genSeed">Seed</label><input id="genSeed" type="number" value="${esc(state.seed)}"></div>`}
+      <button class="btn primary" type="button" id="btnGen">Générer</button>
+    </div>
+    ${stale ? `<div class="empty">Cliquez sur Générer pour produire les concrets de ${esc(a.id)}.</div>` : `
+    <div class="summary">
+      <div class="stat"><b>${cs.length}</b><span>générés</span></div>
+      <div class="stat"><b>${valid.length}</b><span>valides</span></div>
+      <div class="stat"><b>${excl.length}</b><span>exclus</span></div>
+      <span class="chip ok">${go} changer / terminer</span><span class="chip warn">${hold} attendre / céder</span>${other ? `<span class="chip info">${other} autre</span>` : ''}
+      <div class="seg" role="group" aria-label="Filtrer les concrets">${[['all', 'Tous'], ['valid', 'Valides'], ['excl', 'Exclus']].map(([k, l]) => `<button type="button" data-filter="${k}" aria-pressed="${state.filter === k}">${l}</button>`).join('')}</div>
+    </div>
+    <div class="results"><div class="tablewrap"><table><thead><tr><th>Concret</th><th class="exp">Attendu (oracle candidat) ou raison d'exclusion</th>${keys.map(k => `<th title="${esc((P[k] || {}).label || k)}">${esc(k)}</th>`).join('')}</tr></thead><tbody>
+      ${rows.slice(0, state.shown).map(c => `<tr data-con="${esc(c.id)}" aria-selected="${c.id === state.sel}"><td class="num">${esc(c.id.split('-').pop())}</td><td class="exp">${c.excluded.length ? `<span class="chip crit">exclu</span> <span class="muted">${esc(c.excluded.join(' ; '))}</span>` : `<span class="chip ${c.expected.cat === 'go' ? 'ok' : c.expected.cat === 'hold' ? 'warn' : 'info'}">${esc(c.expected.txt)}</span> <span class="muted">${esc(c.expected.why)}</span>`}</td>
+        ${keys.map(k => `<td class="num">${esc(fmt(c.values[k]))}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div></div>
+    <div class="more">${rows.length > state.shown ? `<button class="btn small" type="button" id="btnMore">Afficher ${Math.min(120, rows.length - state.shown)} de plus</button>` : ''}<span>${Math.min(state.shown, rows.length)} / ${rows.length} affichés · oracle : headway ≥ ${HW_MIN} s, décélération imposée ≤ ${DECEL_MAX} m/s², point de non-retour ${PONR} % (valeurs candidates à valider)</span></div>
+    <div class="osc-panel">
+      <div class="bar"><span class="eyebrow">Fichier OSC du concret sélectionné</span><span class="mono muted">${sel ? esc(sel.id) : ''}</span>
+        <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" id="btnCopy" ${sel && !sel.excluded.length ? '' : 'disabled'}>Copier</button>
+        <button class="btn small primary" type="button" id="btnZip" ${valid.length ? '' : 'disabled'}>Exporter ${valid.length} OSC + manifeste (.zip)</button></span></div>
+      ${sel ? (sel.excluded.length ? `<p class="note">Ce concret est exclu : ${esc(sel.excluded.join(' ; '))}. Aucun OSC n'est produit.</p>` : `<pre class="code" id="oscCode">${esc(oscFor(sel))}</pre>`) : '<p class="note">Sélectionnez un concret valide dans le tableau.</p>'}
+      <p class="note">Le concret n'est pas stocké à part : sa recette (behavior, abstract, valeurs, seed) part dans l'en-tête de l'OSC et dans le manifeste du zip.</p>
+    </div>`}`;
+}
+
+/* ---------- Import / export ---------- */
+let downloads = null;
+(async () => { try { downloads = await window.claude?.use?.('downloads'); } catch (e) { downloads = null; } })();
+async function save(filename, data){
+  if (!downloads) { toast('Le téléchargement n’est pas disponible dans cette vue.'); return; }
+  try { await downloads.save({filename, data}); toast(`${filename} prêt.`); }
+  catch (e) { if (e && e.code === 'declined') toast('Téléchargement annulé.'); else if (e && e.code === 'rate_limited') toast('Une demande de téléchargement est déjà ouverte.'); else toast('Le téléchargement a échoué.'); }
+}
+function catalogueJSON(){
+  return JSON.stringify({schema: 'scenario-studio/catalogue@0.1', exported: new Date().toISOString().slice(0, 10), behaviors: DATA.behaviors,
+    parameters: P, abstracts: DATA.abstracts.map(({tcs, fis, ...rest}) => ({...rest, tcs, fis}))}, null, 2);
+}
+async function exportZip(){
+  const a = absOf(state.genFor); const valid = state.concretes.filter(c => !c.excluded.length);
+  if (!window.JSZip) { toast('La bibliothèque zip n’a pas pu être chargée.'); return; }
+  const zip = new JSZip();
+  const manifest = {behavior: state.beh, abstract: a.id, abstract_version: a.version || 1, mode: state.genMode, seed: state.genMode === 'random' ? state.genSeed : null, generator: DATA.meta.generator, hire: a.hire,
+    concretes: state.concretes.map(c => ({id: c.id, values: c.values, excluded: c.excluded, expected: c.expected, file: c.excluded.length ? null : `osc/${c.id}.osc`}))};
+  zip.file('manifest.json', JSON.stringify(manifest, null, 2));
+  valid.forEach(c => zip.file(`osc/${c.id}.osc`, oscFor(c)));
+  const blob = await zip.generateAsync({type: 'blob'});
+  save(`${a.id}_concretes.zip`, blob);
+}
+function importCatalogue(text){
+  let j; try { j = JSON.parse(text); } catch (e) { toast('Ce fichier n’est pas un JSON valide.'); return; }
+  const absIn = Array.isArray(j) ? j : (j.abstracts || []);
+  let added = 0, updated = 0; const rejected = [];
+  if (j.parameters && typeof j.parameters === 'object') for (const [k, sp] of Object.entries(j.parameters)) if (!P[k]) P[k] = sp;
+  for (const b of (j.behaviors || [])) { if (b && b.id && b.name && b.use_case) { const i = DATA.behaviors.findIndex(x => x.id === b.id); if (i < 0) DATA.behaviors.push(b); } }
+  for (const a of absIn) {
+    if (!a || !a.id || !a.name || !Array.isArray(a.behaviors) || !a.behaviors.length) { rejected.push(a && a.id ? `${a.id} (behaviors ou name manquant)` : 'entrée sans id'); continue; }
+    const unknownBeh = a.behaviors.filter(id => !behOf(id)); if (unknownBeh.length) { rejected.push(`${a.id} (behavior inconnu : ${unknownBeh.join(', ')})`); continue; }
+    const norm = Object.assign({version: 1, family: 'IMPORT', description: '', actors: '', slots: [], phases: 'init_drive > change_lane > post_phase', static_odd: '', variants: '', rule: '', tasks: [], kpis: [], modifiers: [], odd_status: '', hazard_contexts: [], perception_dependent: false, oracle: 'rule', side_lanes: 1, parameters: [], hire: [], tcs: [], fis: [], env: '', foretellix: '', source: 'import', status: 'IMPORTED', lc_type: ''}, a);
+    norm.parameters = (norm.parameters || []).map(p => typeof p === 'string' ? {key: p} : p).filter(p => p && p.key);
+    const i = DATA.abstracts.findIndex(x => x.id === a.id);
+    if (i >= 0) { DATA.abstracts[i] = norm; updated++; } else { DATA.abstracts.push(norm); added++; }
+  }
+  toast(`${added} abstract(s) ajouté(s), ${updated} mis à jour${rejected.length ? `, ${rejected.length} rejeté(s) : ${rejected.slice(0, 2).join(' ; ')}` : ''}.`);
+  renderAll();
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-beh],[data-abs],[data-tab],[data-filter],[data-con],[data-act],#btnGen,#btnMore,#btnCopy,#btnZip,#btnImport,#btnExportCat');
+  if (!t) return;
+  if (t.dataset.beh) { state.beh = t.dataset.beh; state.fam = 'all'; const first = visibleAbstracts()[0]; state.abs = first ? first.id : null; state.tab = 'scene'; if (first) generate(); renderAll(); return; }
+  if (t.dataset.abs) { state.abs = t.dataset.abs; state.tab = state.tab || 'scene'; generate(); renderAll(); return; }
+  if (t.dataset.tab) { state.tab = t.dataset.tab; renderDetail(); return; }
+  if (t.dataset.filter) { state.filter = t.dataset.filter; state.shown = 60; renderGen(); return; }
+  if (t.dataset.con) { state.sel = t.dataset.con; renderGen(); return; }
+  if (t.dataset.act === 'import' || t.id === 'btnImport') { $('#importFile').click(); return; }
+  if (t.id === 'btnGen') { generate(); renderGen(); toast(`${state.concretes.length} concrets générés.`); return; }
+  if (t.id === 'btnMore') { state.shown += 120; renderGen(); return; }
+  if (t.id === 'btnCopy') { const txt = $('#oscCode')?.textContent || ''; navigator.clipboard?.writeText(txt).then(() => toast('OSC copié.'), () => { const r = document.createRange(); r.selectNodeContents($('#oscCode')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Texte sélectionné, copiez avec Ctrl+C.'); }); return; }
+  if (t.id === 'btnZip') { exportZip(); return; }
+  if (t.id === 'btnExportCat') { save('scenario_studio_catalogue.json', catalogueJSON()); return; }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'famFilter') { state.fam = t.value; renderAbstractList(); return; }
+  if (t.id === 'perfectOnly') { state.perfectOnly = t.checked; renderAbstractList(); return; }
+  if (t.id === 'genMode') { state.mode = t.value; renderGen(); return; }
+  if (t.id === 'genLevels') { state.levels = t.value; renderGen(); return; }
+  if (t.id === 'genSamples') { state.samples = t.value; return; }
+  if (t.id === 'genSeed') { state.seed = t.value; return; }
+  if (t.id === 'importFile' && t.files && t.files[0]) { const f = t.files[0]; const rd = new FileReader(); rd.onload = () => importCatalogue(String(rd.result)); rd.readAsText(f); t.value = ''; }
+});
+function renderAll(){ renderBehaviors(); renderAbstractList(); renderDetail(); renderGen(); }
+generate(); renderAll();
+})();
+</script>

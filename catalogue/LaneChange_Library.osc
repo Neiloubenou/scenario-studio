@@ -1,0 +1,284 @@
+# =====================================================================
+# Lane Change scenario library, Foretellix style (v0, PROPOSED)
+# SERYTI for Torc Robotics, DO-Crawl I-35 South
+#
+# Pseudo ASAM OpenSCENARIO DSL 2.x. NOT compiled, NOT tool-checked.
+# Purpose: show the abstract scenarios of the Excel catalogue
+# (LaneChange_Scenario_Library_Foretellix_style_v0.xlsx) in the form a
+# Foretify / OSC2 user would write them: actors, phases, parameters with
+# constraints, coverage with buckets, KPIs recorded, checkers.
+#
+# Conventions
+#   sut.car  = Torc SDT (tractor + trailer). Its actions describe the
+#              maneuver the scenario requests / matches; in simulation the
+#              SDT stack drives it.
+#   Actor names follow the Torc Miro slot grid:
+#   a_lead_origin, b_lead_target, c_follow_origin, d_follow_target,
+#   e_far_lane, f_far_lane_ahead, s_shoulder, o_static
+#   Ranges marked "# GAP" have no I-35 L4 data yet (see sheet Parameters).
+# =====================================================================
+
+enum lc_side_t: [left, right]
+enum e_variant_t: [hold_sdt_speed, accelerate, decelerate, no_signal]
+enum lc_phase_t: [prepare, early_execute, late_execute]
+
+# ---------------------------------------------------------------------
+# Common parameters and KPIs shared by every lane-change scenario
+# ---------------------------------------------------------------------
+scenario sut.lane_change_base:
+    side: lc_side_t
+    sdt_speed: speed with:
+        keep(it in [45..75]mph)              # TORC-ODD-84, 94% of miles at 70-75 mph
+    lane_count: uint with:
+        keep(it in [2..4])                   # TORC-ODD-356
+    road: path with:
+        keep(it.min_lanes(lane_count))
+        keep(it.lane_width in [2.5..6.5]m)   # TORC-ODD-76
+        keep(it.max_curvature <= 0.0022/m)   # TORC-ODD-360 spec
+
+    # KPIs (sheet KPIs & Checkers)
+    record(sdt_min_ttc_to_vehicle, unit: s)                      # K-SAF-02
+    record(min_lateral_clearance, unit: m)                       # K-SAF-04
+    record(imposed_decel_on_rear_target_vehicle, unit: mps2)     # K-SAF-05
+    record(time_headway_to_new_lead_after_lc, unit: s)           # K-SAF-06
+    record(boundary_straddle_duration, unit: s)                  # K-SAF-07
+    record(signal_lead_time, unit: s)                            # K-CMP-01
+    record(lc_duration, unit: s)                                 # K-EFF-02
+    record(max_lateral_accel, unit: mps2)                        # K-CRT-01
+
+    # Checkers
+    check(no_collision)                                          # K-SAF-01
+    check(signal_before_lateral_motion)                          # K-CMP-01 (TX TRC 545.104)
+    check(no_lc_across_prohibited_marking)                       # K-CMP-03
+
+# ---------------------------------------------------------------------
+# LC-NOM-01  Torc Miro "Abstract Scenario": ego only, free target lane
+# ---------------------------------------------------------------------
+scenario sut.lane_change_free_target_lane:
+    base: sut.lane_change_base
+    do serial:
+        init_drive: sut.car.drive(base.road, duration: [2..5]s) with:
+            speed(base.sdt_speed)
+        signal: sut.car.drive(duration: [1..5]s)       # indicator on, no lateral motion yet
+        change_lane: sut.car.change_lane(side: base.side, num_of_lanes: 1, duration: [3..10]s)
+        post_phase: sut.car.drive(duration: [2..5]s)
+
+    cover(sdt_speed_at_change_lane, expression: base.sdt_speed, unit: mph, range: [45..75], every: 5)
+    cover(lc_side, expression: base.side)
+    cover(lane_count, expression: base.lane_count)
+    cover(lc_duration, unit: s, range: [0..10], every: 1)
+
+# ---------------------------------------------------------------------
+# LC-NOM-02  Torc Miro "Concrete Scenario A": gap between B and D
+# ---------------------------------------------------------------------
+scenario sut.lane_change_into_gap_with_surrounding_traffic:
+    base: sut.lane_change_base
+    a_lead_origin: vehicle
+    b_lead_target: vehicle          # public-road run: Torc lead vehicle
+    c_follow_origin: vehicle
+    d_follow_target: vehicle        # public-road run: Torc chase vehicle
+    front_gap: time with:
+        keep(it in [0.5..6]s)       # GAP: no I-35 gap distribution yet
+    rear_gap: time with:
+        keep(it in [0.5..6]s)       # GAP
+    d_rel_speed: speed with:
+        keep(it in [-20..30]mph)    # GAP
+
+    do serial:
+        init_drive: parallel(duration: [2..5]s):
+            sut.car.drive(base.road) with:
+                speed(base.sdt_speed)
+            a_lead_origin.drive() with:
+                lane(same_as: sut.car)
+                position([20..80]m, ahead_of: sut.car)
+            c_follow_origin.drive() with:
+                lane(same_as: sut.car)
+                position([20..80]m, behind: sut.car)
+            b_lead_target.drive() with:
+                lane(side_of: sut.car, side: base.side)
+                position(time: front_gap, ahead_of: sut.car)
+            d_follow_target.drive() with:
+                lane(side_of: sut.car, side: base.side)
+                position(time: rear_gap, behind: sut.car)
+                speed(base.sdt_speed + d_rel_speed)
+        change_lane: parallel(duration: [3..10]s):
+            sut.car.change_lane(side: base.side, num_of_lanes: 1)
+            b_lead_target.drive()
+            d_follow_target.drive()
+        post_phase: sut.car.drive(duration: [2..5]s)
+
+    cover(front_gap, unit: s, range: [0..6], every: 0.5)
+    cover(rear_gap, unit: s, range: [0..6], every: 0.5)
+    cover(d_rel_speed, unit: mph, range: [-20..30], every: 5)
+    cover(rear_gap_x_d_rel_speed, items: [rear_gap, d_rel_speed])   # cross coverage
+
+    check(imposed_decel_on_rear_target_vehicle <= 3mps2)   # candidate UN R79 / R157, to verify
+
+# ---------------------------------------------------------------------
+# LC-TGT-02  Torc Miro "Concrete Scenario B": E merges into same target lane
+# ---------------------------------------------------------------------
+scenario sut.lane_change_with_simultaneous_merge_from_far_lane:
+    gap: sut.lane_change_into_gap_with_surrounding_traffic
+    e_far_lane: vehicle
+    e_variant: e_variant_t          # Miro: hold_sdt_speed (E1) / accelerate (E2)
+    e_lc_start_rel_to_sdt: time with:
+        keep(it in [-2..3]s)
+    e_long_offset: length with:
+        keep(it in [-30..30]m)
+    keep(gap.base.lane_count >= 3)
+
+    do serial:
+        setup: parallel(duration: [2..5]s):
+            gap.init_drive
+            e_far_lane.drive() with:
+                lane(side_of: sut.car, side: gap.base.side, offset: 2)    # lane beyond target lane
+                position(e_long_offset, ahead_of: sut.car)
+                speed(gap.base.sdt_speed, at: start)
+        conflict: parallel(duration: [3..10]s):
+            sut.car.change_lane(side: gap.base.side, num_of_lanes: 1)
+            serial:
+                wait(e_lc_start_rel_to_sdt)
+                e_far_lane.change_lane(side: opposite(gap.base.side), num_of_lanes: 1) with:
+                    if e_variant == accelerate: change_speed([3..15]mph, faster)
+                    if e_variant == decelerate: change_speed([3..15]mph, slower)
+                    if e_variant == hold_sdt_speed: keep_speed()
+                    if e_variant == no_signal: indicator(off)
+        resolve: sut.car.drive(duration: [2..5]s)    # SDT holds, aborts or completes
+
+    cover(e_variant)
+    cover(e_lc_start_rel_to_sdt, unit: s, range: [-2..3], every: 0.5)
+    cover(e_long_offset, unit: m, range: [-30..30], every: 5)
+    cover(e_offset_x_variant, items: [e_long_offset, e_variant])
+
+    check(abort_decision_correct)                    # K-SAF-08
+
+# ---------------------------------------------------------------------
+# LC-TGT-01  Fast rear approach in target lane
+# ---------------------------------------------------------------------
+scenario sut.lane_change_with_fast_rear_approach:
+    base: sut.lane_change_base
+    d_follow_target: vehicle
+    closing_speed: speed with:
+        keep(it in [0..30]mph)          # GAP
+    phase_at_detection: lc_phase_t
+
+    do serial:
+        init_drive: parallel(duration: [2..5]s):
+            sut.car.drive(base.road) with: speed(base.sdt_speed)
+            d_follow_target.drive() with:
+                lane(side_of: sut.car, side: base.side)
+                position([30..150]m, behind: sut.car)
+                speed(base.sdt_speed + closing_speed)
+        change_lane: sut.car.change_lane(side: base.side, num_of_lanes: 1)
+        post_phase: sut.car.drive(duration: [2..5]s)
+
+    cover(closing_speed, unit: mph, range: [0..30], every: 5)
+    cover(phase_at_detection)
+    check(abort_decision_correct)
+
+# ---------------------------------------------------------------------
+# LC-TGT-04  Lead in target lane brakes during the lane change
+# ---------------------------------------------------------------------
+scenario sut.lane_change_with_target_lead_braking:
+    gap: sut.lane_change_into_gap_with_surrounding_traffic
+    b_decel: acceleration with:
+        keep(it in [1..8]mps2)
+    do serial:
+        gap.init_drive
+        parallel(duration: [3..10]s):
+            sut.car.change_lane(side: gap.base.side, num_of_lanes: 1)
+            serial:
+                wait([0..3]s)
+                gap.b_lead_target.change_speed(target: [0..40]mph, rate: b_decel)
+        post_phase: sut.car.drive(duration: [2..5]s)
+    cover(b_decel, unit: mps2, range: [1..8], every: 1)
+
+# ---------------------------------------------------------------------
+# LC-CUR-02  Lead cuts out and reveals a stopped vehicle (evasive LC)
+#            public analog: vehicle_cut_out_exposing_vehicle
+# ---------------------------------------------------------------------
+scenario sut.evasive_lane_change_after_lead_cut_out:
+    base: sut.lane_change_base
+    a_lead_origin: vehicle
+    o_static: vehicle               # stopped vehicle in origin lane
+    reveal_distance: length with:
+        keep(it in [20..150]m)
+    target_lane_free: bool
+    do serial:
+        follow: parallel(duration: [3..8]s):
+            sut.car.drive(base.road) with: speed(base.sdt_speed)
+            a_lead_origin.drive() with:
+                lane(same_as: sut.car)
+                position([20..50]m, ahead_of: sut.car)
+            o_static.remain_stationary() with:
+                lane(same_as: sut.car)
+        cut_out: a_lead_origin.change_lane(side: base.side, num_of_lanes: 1)
+        react: sut.car.drive(duration: [2..8]s)     # brake in lane or evasive LC
+    cover(reveal_distance, unit: m, range: [20..150], every: 10)
+    cover(target_lane_free)
+
+# ---------------------------------------------------------------------
+# LC-RD-01  Mandatory lane change at a lane drop
+# ---------------------------------------------------------------------
+scenario sut.mandatory_lane_change_lane_drop:
+    base: sut.lane_change_base
+    distance_to_drop: length with:
+        keep(it in [100..1600]m)
+    traffic_volume: uint with:
+        keep(it in [300..2000])         # veh/h, TCDS 303..1950
+    do serial:
+        approach: sut.car.drive(duration: [5..30]s) with:
+            # road element: origin lane ends after distance_to_drop
+            lane(rightmost)
+        change_lane: sut.car.change_lane(side: left, num_of_lanes: 1)
+        post_phase: sut.car.drive(duration: [2..5]s)
+    cover(distance_to_drop, unit: m, range: [100..1600], every: 100)
+    cover(traffic_volume, range: [300..2000], every: 250)
+    check(lc_completed_before_drop)     # K-EFF-01
+
+# ---------------------------------------------------------------------
+# LC-ABT-01  Abort and return to origin lane
+# ---------------------------------------------------------------------
+scenario sut.lane_change_abort_and_return:
+    gap: sut.lane_change_into_gap_with_surrounding_traffic
+    lateral_progress_at_trigger: uint with:
+        keep(it in [0..100])            # percent of lane change completed
+    trigger: [d_accelerates, e_merges, b_brakes]
+    do serial:
+        gap.init_drive
+        sut.car.change_lane(side: gap.base.side, num_of_lanes: 1)
+        # trigger injected at lateral_progress_at_trigger
+        sut.car.drive(duration: [2..6]s)    # expected: return or complete per rule book
+    cover(lateral_progress_at_trigger, range: [0..100], every: 10)
+    cover(trigger)
+    check(abort_decision_correct)
+    check(boundary_straddle_duration <= TBD)
+
+# ---------------------------------------------------------------------
+# LC-OOD-01  Move over for stopped EMV on shoulder  [Out-of-ODD]
+# ---------------------------------------------------------------------
+scenario sut.move_over_for_stopped_emv_on_shoulder:
+    base: sut.lane_change_base
+    s_shoulder: vehicle with:
+        keep(it.category in [police, ambulance, fire, txdot, tow])
+        keep(it.lights == on)
+    target_lane_free: bool
+    do serial:
+        approach: parallel(duration: [5..20]s):
+            sut.car.drive(base.road) with: lane(rightmost)
+            s_shoulder.remain_stationary() with:
+                position([150..400]m, ahead_of: sut.car)
+                # on right shoulder
+        move_over: sut.car.change_lane(side: left, num_of_lanes: 1)
+        pass: sut.car.drive(duration: [3..10]s)
+    cover(target_lane_free)
+    check(move_over_compliance)    # TX TRC 545.157: vacate lane or slow 20 mph below limit
+
+# ---------------------------------------------------------------------
+# Modifiers (mixable, sheet Modifiers). Example of a mix:
+# ---------------------------------------------------------------------
+# scenario sut.lane_change_into_gap_in_rain:
+#     do mix:
+#         sut.lane_change_into_gap_with_surrounding_traffic()
+#         environment.rain(intensity: [light, moderate, heavy])   # M-01, TORC-ODD-27
+#         environment.sun(azimuth_rel_heading: [front, side])     # M-04, TORC-ODD-36

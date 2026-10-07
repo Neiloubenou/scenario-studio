@@ -1,0 +1,15 @@
+{
+  "schema": "scenario-studio/behavior@0.1",
+  "id": "BEH-HW-LANE-CHANGES-OVERTAKING",
+  "use_case": "Highway",
+  "name": "Lane Changes / Overtaking",
+  "ddt": "DDT",
+  "categories": [
+    "Safety",
+    "Traffic compliance",
+    "Efficiency",
+    "Courtesy"
+  ],
+  "source": "Jama Behavior Table (2026-03-21)",
+  "status": "draft"
+}

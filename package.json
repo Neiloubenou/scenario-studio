@@ -1,0 +1,12 @@
+{
+  "name": "scenario-studio",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "Behavior, catalogue de scénarios abstraits, génération des scénarios concrets et export OSC pour le SDT Torc (DO-Crawl I-35 South).",
+  "scripts": {
+    "test": "node tests/test-ref.mjs && node tests/test-full.mjs",
+    "counts": "node scripts/counts.mjs",
+    "build": "python3 scripts/build_catalog_full.py && python3 scripts/hire_links.py && node scripts/counts.mjs && python3 scripts/build_excel.py && python3 scripts/build_apps.py"
+  }
+}

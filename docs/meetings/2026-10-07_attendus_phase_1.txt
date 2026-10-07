@@ -1,0 +1,107 @@
+ATTENDUS DE LA PREMIÈRE ÉTAPE DE SCENARIO STUDIO
+Source : WhatsApp Audio 2026-10-07 at 13.59.14.mp4
+Durée : 49 min 36 s
+
+PÉRIMÈTRE DE CETTE SYNTHÈSE
+Démontrer, sur un exemple simple, que l’outil peut relier un behavior à un scénario abstrait puis à des scénarios concrets, avec le HIRE associé, et préparer le rapprochement des deux outils. « Phase 1 » désigne ici notre synthèse de l’accord de court terme ; la réunion ne définit pas formellement une phase portant ce numéro.
+Cette synthèse repose sur l’audio. Les schémas partagés à l’écran, le code, Jama et les documents mentionnés n’ont pas été consultés.
+
+LECTURE SIMPLE DU FLUX ATTENDU
+Behavior (fonction ou comportement visé) → Abstract (famille de situations) → Concrete (cas avec des paramètres précis).
+Le HIRE est associé à l’Abstract : il porte les dangers et l’évaluation des risques discutés pour ce scénario. Sa génération automatique est une évolution envisagée.
+Pour le premier jalon : construire une référence manuelle → la reproduire avec l’outil → comparer les résultats et les liens → préparer l’intégration de l’autre catalogue.
+
+CE QUI EST CONVENU POUR LE PREMIER EXEMPLE
+1. Commencer par une seule chaîne behavior → abstract scenario → concrete, sur un cas existant et simple.
+Accord confirmé par la seconde transcription : partir de la « branche 1 », voir si la connexion fonctionne « sur un truc, sur une ligne ». Le nom du cas cité reste indistinct ; il ne faut pas le remplacer par une supposition.
+Repères audio : 36:10–36:41 ; 40:06–40:40
+
+2. Construire des exemples manuels servant de références aux résultats attendus de l’outil.
+La seconde transcription confirme des exemples simples de behavior, abstract et concrete : « c’est ça, votre outil devrait créer ça ». Le format de fichier prononcé dans ce passage est mal reconnu ; OpenSCENARIO est nommé dans la démo antérieure, sans établir ici un schéma exact.
+Repères audio : 40:43–41:09 ; 16:36–17:11
+
+3. Inclure le lien avec le HIRE dans l’exemple de travail.
+Le HIRE est rattaché au niveau abstract dans l’échange, puis rappelé avec behavior, abstract et concrete dans l’accord pour la semaine suivante. L’orthographe HIRE a été confirmée par l’utilisateur.
+Repères audio : 41:10–41:46 ; 43:55–44:29
+
+4. S’appuyer sur les éléments existants et prévoir l’intégration du catalogue préparé par l’autre intervenant.
+Des premiers behaviors sont supposés disponibles dans Jama (« je crois »). La construction de la connexion sur un exemple précède l’intégration du catalogue. Une intégration Jama complète et bidirectionnelle n’est pas explicitement engagée pour cet exemple initial.
+Repères audio : 36:10–36:41 ; 40:06–40:40 ; 43:55–44:29
+
+5. Donner priorité aux catalogues, au stockage et aux relations entre les objets.
+Les interlocuteurs reportent les décisions UI/UX et demandent de rester concentrés sur les catalogues et la manière de stocker les données. JSON est évoqué sous forme de question, sans choix arrêté. Le type d’objet au plus haut niveau d’abstraction reste également ouvert.
+Repères audio : 44:30–46:13 ; 47:25–47:59
+
+6. Éprouver d’abord la chaîne avec un cas de comportement ou de dynamique compatible avec une perception parfaite.
+La discussion propose de construire les outils sur le cas simple que le simulateur sait traiter, puis d’enrichir la chaîne. Les limites liées à la perception sont reconnues ; ce périmètre ne couvre donc pas toute l’analyse SOTIF.
+Repères audio : 28:55–29:25 ; 33:03–34:03
+
+CRITÈRES DE RÉUSSITE PROPOSÉS POUR RENDRE CET ACCORD VÉRIFIABLE
+Les critères suivants traduisent l’accord en démonstration concrète ; ils ne sont pas une liste de recette formellement validée pendant la réunion.
+
+1. Disposer d’un exemple manuel relu collectivement, contenant un behavior, un abstract, au moins un concrete et le HIRE associé, renseigné pour cet exemple.
+
+2. Reproduire cet exemple avec l’outil et comparer les objets et liens obtenus à la référence manuelle.
+
+3. Pouvoir retrouver de quel abstract et de quel behavior provient chaque sortie de l’exemple, sans dépendre uniquement de l’écran de démonstration.
+
+4. Sauvegarder puis relire les données de l’exemple dans un format partagé à choisir ; documenter les champs indispensables et leurs relations.
+
+5. Montrer comment le catalogue de l’autre intervenant pourra alimenter la chaîne, avec un exemple d’échange entre les deux outils.
+
+6. Présenter les éléments effectivement réalisés, ceux encore manuels et les interfaces externes encore simulées. Confirmer séparément si l’export OpenSCENARIO et l’exécution dans le simulateur font partie de cette première démonstration.
+
+CE QUI VIENT ENSUITE OU RESTE UNE PISTE
+
+- UI/UX aboutie et direction visuelle : explicitement reportées ; priorité à la structure et aux catalogues.
+Repères audio : 45:10–46:13
+
+- Outils complets de gestion des abstracts, de leur stockage et de leur interface, ainsi que l’interface behavior : présentés comme la suite après rapprochement des premiers outils. Cela n’empêche pas de définir dès maintenant les données nécessaires au prototype.
+Repères audio : 43:55–45:10
+
+- Enrichissements perception, conditions difficiles et chemins liés aux FI/TC : extensions de la chaîne simple, dont les détails techniques restent à préciser.
+Repères audio : 28:55–29:25 ; 32:07–34:59
+
+- Automatisation intégrale behavior → HIRE → abstract → concrete : ambition envisagée, pas engagement démontré pour le premier exemple. Tables de combinaisons et agents sont discutés, sans choix définitif ni validation des règles d’évaluation du risque.
+Repères audio : 41:10–43:19
+
+- Agent de contrôle périodique de cohérence et de détection d’éléments manquants : idée proposée, sans livrable initial fixé.
+Repères audio : 43:22–43:55
+
+- Dashboard des résultats connus issus du simulateur : vision de suivi décrite, sans décision explicite de livraison dans le premier exemple.
+Repères audio : 46:14–47:24
+
+RÉPARTITION DU TRAVAIL
+
+- Auteur de la démo Scenario Studio : essayer la connexion behavior → abstract → concrete sur un exemple simple, puis intégrer le catalogue de son interlocuteur (36:10–36:41 ; 40:06–40:40).
+
+- Autre intervenant : préparer son catalogue et son outil pour les concrets ; la partie abstract est également citée dans la répartition. Le détail de cette frontière de travail doit être harmonisé (40:06–40:40 ; 43:55–44:29).
+
+- Travail commun : définir des exemples manuels attendus, comparer les deux approches et les rapprocher ; l’auteur exact de chaque exemple manuel n’est pas désigné (40:43–41:09 ; 43:55–44:29).
+
+- Sujet distinct : mettre à jour le diagramme du processus système/SOTIF et ses livrables dans Miro. Ce travail de cadrage général n’est pas une fonctionnalité à ajouter automatiquement au prototype (13:01–14:34 ; 47:59–49:23).
+
+POINTS À CONFIRMER
+
+- Quel est le nom exact du cas simple choisi et quelles données de référence sont déjà disponibles ?
+
+- Quels champs comporte le HIRE associé à l’exemple et qui le relit ?
+
+- Qu’appelle-t-on behavior au plus haut niveau : fonction, tâche ou autre objet ? La réunion laisse ce choix ouvert.
+
+- Quel format de stockage et quel contrat d’échange commun adopter ? JSON est une option évoquée, pas une décision.
+
+- Quels objets faut-il conserver : abstracts, paramètres, concrets générés, fichiers de simulation, résultats et versions ? La vision discutée distingue concrets générés et catalogue de fichiers de sortie.
+
+- Jama est-il seulement une source d’exemples pour le prototype, ou faut-il déjà implémenter la lecture, l’écriture et les relations ?
+
+- La première démonstration s’arrête-t-elle à des concrets reliés et sauvegardés, ou inclut-elle export OpenSCENARIO, exécution dans le simulateur et remontée des résultats ?
+
+- Quels contrôles de cohérence, règles d’exclusion et mécanismes évitant les doublons sont indispensables au premier cas ?
+
+- Le futur parcours ciblé sur la vérification d’exigences est-il une extension distincte ou doit-il déjà alimenter ce premier exemple ?
+
+- Les colonnes et liens du schéma partagé à l’écran doivent être récupérés pour lever les références visuelles que l’audio ne permet pas de reconstituer exactement.
+
+ÉCHÉANCE ÉVOQUÉE
+La réunion vise un exemple simple pour « la semaine prochaine » et évoque un point « jeudi ». La date du fichier audio ne suffit pas à dater la réunion avec certitude : conserver ces repères relatifs ou faire confirmer le calendrier. Aucun délai de livraison complète de l’outil n’est arrêté.

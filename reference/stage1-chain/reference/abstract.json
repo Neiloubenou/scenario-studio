@@ -1,0 +1,135 @@
+{
+  "schema": "scenario-studio/abstract@0.1",
+  "id": "ABS-HW-LC-SHOULDER-STOPPED-VEHICLE",
+  "version": 1,
+  "name": "sut_lane_change_for_stopped_vehicle_on_shoulder",
+  "behaviors": [
+    "BEH-HW-LANE-CHANGES-OVERTAKING"
+  ],
+  "description": "A vehicle is stopped fully on the right shoulder ahead while the SDT drives in the rightmost lane of a highway. Vehicles ahead and behind the SDT may be present. The SDT is expected to move over or adapt its speed; its response is observed, never scripted.",
+  "catalogue_refs": {
+    "seryti_lane_change_library": "LC-OOD-01",
+    "scenario_studio_demo": "DEMO-SHOULDER-01"
+  },
+  "perception_dependent": false,
+  "perception_note": "Run with perfect perception in TorSim for stage 1; detection of the stopped vehicle / EMV is a later FI/TC extension.",
+  "requirements": [
+    {
+      "id": "TO_CONFIRM",
+      "note": "Candidate links: CRAWL EMV handling SYSREQ (move-over), to be confirmed in the Jama snapshot"
+    }
+  ],
+  "hire": [
+    {
+      "id": "HW_ Lane Changes / Overtaking_No Steering_04",
+      "hazard": "H1",
+      "S": "S3",
+      "E": "E2",
+      "C": "C3",
+      "link_status": "proposed"
+    },
+    {
+      "id": "HW_ Lane Changes / Overtaking_Insufficient Steering_04",
+      "hazard": "H1",
+      "S": "S3",
+      "E": "E3",
+      "C": "C1",
+      "link_status": "proposed"
+    },
+    {
+      "id": "HW_ Lane Changes / Overtaking_No Deceleration_01",
+      "hazard": "H2",
+      "S": "S3",
+      "E": "E3",
+      "C": "C3",
+      "link_status": "proposed"
+    },
+    {
+      "id": "HW_ Lane Changes / Overtaking_No Turn Signal_01",
+      "hazard": "H1",
+      "S": "S3",
+      "E": "E2",
+      "C": "C3",
+      "link_status": "proposed"
+    }
+  ],
+  "expected_behavior": "Vacate the lane next to the shoulder when the adjacent lane is safe, otherwise slow down (TX TRC 545.157 logic for EMV; courtesy for a plain stopped vehicle). Candidate oracle, not a pass/fail criterion yet.",
+  "status": "draft",
+  "configuration": {
+    "road": {
+      "types": [
+        "highway"
+      ],
+      "laneCounts": [
+        2,
+        3
+      ],
+      "egoStartLane": "rightmost"
+    },
+    "ego": {
+      "speedMps": [
+        20
+      ],
+      "truck": {
+        "lengthM": [
+          18
+        ],
+        "widthM": [
+          2.6
+        ],
+        "heightM": [
+          4
+        ]
+      }
+    },
+    "actors": {
+      "front": "optional",
+      "rear": "optional",
+      "adjacent": "off",
+      "shoulder": "required"
+    },
+    "maneuvers": {
+      "laneChange": true,
+      "cutIn": {
+        "mode": "off"
+      }
+    },
+    "values": {
+      "otherSpeedMps": [
+        15
+      ],
+      "frontDistanceM": [
+        30
+      ],
+      "rearDistanceM": [
+        30
+      ],
+      "adjacentDistanceM": [],
+      "shoulderDistanceM": [
+        40,
+        60,
+        80
+      ],
+      "shoulderWidthM": [
+        3.6
+      ],
+      "shoulderVehicleWidthM": [
+        2
+      ],
+      "shoulderOffsetM": [
+        0,
+        0.8
+      ],
+      "cutInDistanceM": []
+    },
+    "shoulder": {
+      "condition": "fully_on_shoulder"
+    },
+    "rules": {},
+    "options": {
+      "includeEmptyBaseline": false,
+      "maxExpansion": 10000,
+      "maxPreview": 200
+    }
+  }
+}

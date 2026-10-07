@@ -1,0 +1,290 @@
+RETRANSCRIPTION HORODATÉE
+Réunion sur le processus système et SOTIF et l’outil Scenario Studio
+Source : WhatsApp Audio 2026-10-07 at 13.59.14.mp4
+Durée : 49 min 36 s
+
+Transcription automatique relue et normalisée à partir de plusieurs passes.
+Les niveaux sonores ont été équilibrés pour mieux reconnaître la voix faible.
+Les passages de cadrage final ont fait l’objet d’une vérification avec un
+second modèle. Il ne s’agit pas d’un verbatim certifié par écoute humaine.
+Les passages encore mal reconnus et les sigles incertains sont signalés.
+Les locuteurs ne sont pas attribués. Les horodatages repèrent des segments,
+et les références aux colonnes ou cases concernent un schéma non fourni.
+
+Repères de lecture
+00:00  Cadrage du processus système et SOTIF et des livrables
+14:03  Présentation de la démo Scenario Studio
+20:24  Vision globale et relations entre behaviors et scénarios
+28:55  Périmètre de simulation et limites de perception
+36:10  Premier exemple à construire et répartition du travail
+40:06  Exemples manuels et chaîne minimale
+43:55  Prochain jalon, catalogues, données et interface
+47:59  Retour au diagramme du processus général
+
+Note terminologique : HIRE est la graphie confirmée par l’utilisateur pour
+le sigle associé à l’analyse des dangers et risques. TorSim reste une
+graphie de travail pour le nom du simulateur entendu dans l’audio.
+
+[00:00 - 00:34]
+On commence à avoir des trucs sympas. Je pourrais… Si on a un peu de temps, je peux te montrer un peu ce que j’ai en tête après, mais là, 100 % pour toi, et après je peux… Ça marche. Ce que je te propose, c’est que je vais… Tu m’as envoyé un… Vas-y. Tu m’as envoyé un lien qui était un lien dans… Ouais… un chemin local. C’est ça. En fait, je voulais t’envoyer le lien du Zoom. Je me suis trompé. C’est ça. Ouais.
+
+[00:34 - 01:00]
+Je vais partager un truc. Je voulais commencer. Là, je crois qu’on a une demi-heure. Je vais essayer de faire vite. L’idée, c’était de repartir des discussions que Mike a mises sur Slack. En fait, j’ai parcouru un peu ses slides, etc. Je voulais te présenter un truc et savoir ce que tu en penses, parce que je ne vois pas de livrables. C’est un peu con, ce que je vais dire, mais [passage mal reconnu]. Je comprends l’idée un peu générique de travailler dessus, faire le workflow, etc.
+
+[01:00 - 01:29]
+Mais derrière, je ne vois pas ce qu’il faut produire, pour quand. Tu vois, commencer à passer un peu à des trucs concrets, entre guillemets, si tu vois ce que je veux dire. Et du coup, je voulais te partager ça et voir ce que tu en pensais, voir si ça correspond à ce qu’il souhaite faire, ce que toi aussi tu avais en tête. Donc je suis reparti de son workflow, et je suis reparti des différents éléments qu’on a faits, globalement. Normalement, c’est assez bon, ce workflow-là, si je ne dis pas de bêtises. Et j’ai essayé de le caler à sa présentation SOTIF.
+
+[01:29 - 01:59]
+Que ça colle aussi à la norme, et que ce soit plus ou moins collé aussi aux activités qu’on a faites, qu’on est en train de faire. Dans ce qu’il appelle « Define functionality and ODD », moi, j’ai appelé ça Work Package 01 et 02, globalement. En fait, pour moi, c’est toutes les activités qu’on a faites sur l’ODD, déjà. C’est-à-dire le level 1 [passage mal reconnu] level 5, avec la caractérisation, etc. Ensuite, de là, on va passer à l’analyse de risques. Donc une fois que tu as l’ODD, tu as la définition du système, tu es censé faire après l’analyse de risques et les différentes études SOTIF associées à ça.
+
+[01:59 - 02:31]
+C’est là où on fait le HIRE, STPA [sigle incertain], les FI [sigle incertain] et les TC [sigle incertain]. Ça peut être le travail qu’on avait fait ensemble sur ton Miro. On essayait de tout recouper ensemble. De là, après, tu dois faire les expected performances. Une fois que tu as fait les risques, tu es censé mettre des exigences derrière pour les couvrir. Tu vérifies si tu as résolu le risque, et après tu les testes avec la simulation qu’on est en train de faire. J’ai essayé un peu de le découper comme ça. Pour voir, c’est à partir de là, tu penses qu’on peut commencer à dire : voilà, maintenant, on a compris ce que proposait Mike. Sur le principe, moi, je ne suis pas forcément…
+
+[02:31 - 03:16]
+…opposé à ce qu’il propose. C’est de se dire, maintenant, derrière : chaque partie, il faut faire des livrables, et voici les livrables qu’on propose, voici ce qu’on peut réutiliser. C’est pour ça que j’essaye de dessiner un petit peu ça, globalement. Et je voulais avoir ton avis. Est-ce que tu penses que ça répond à une question ? Est-ce que tu penses que c’est cohérent ? Est-ce que tu penses que c’est demandé ? Ou pas du tout ? Ce que tu montres là, ça a du sens ? Ouais, ça a du sens. Enfin, je pense que la difficulté que je vois, c’est…
+
+[03:16 - 03:51]
+La théorie de : ah tiens, il faut qu’on fasse ça, ça et ça. Je pense qu’elle est un peu en tête de tout le monde. Je pense que là où les gens commencent à avoir du mal, c’est : en fait, c’est quoi le vrai livrable ? Où est-ce qu’il est ? Comment tu le crées ? Et comment il se relie à la suite, après ? Et c’est quoi, les cycles ? Je partage. [Passage mal reconnu] quelque chose qui est utile, mais qui, en réalité, n’est pas vraiment le problème, parce que je pense que… Enfin…
+
+[03:52 - 04:31]
+Je pense que tout… Enfin, tu sais, au moment où tu as un peu l’idée du standard dans ta tête, tu sais ce qu’on fait dans le standard et l’ordre. Exact. OK. OK, OK. Mais ouais, j’aime bien, tu as fait ça un peu différemment de ce que tu dis. OK. Ce qui est un peu intéressant aussi, c’est de voir comment [passage mal reconnu] à celui-là. Ouais. OK.
+
+[04:31 - 05:11]
+Ce truc-là, celui-là : quand tu définis la fonctionnalité, tu dois aussi définir la performance. Je sais que tu es en train d’annoter, mais je ne vois pas tes annotations sur mon écran. C’est pour ça, c’est bizarre. Ah, tu ne vois pas ? Non, c’est pour ça. Je voulais faire ça. Attends, je vais essayer de faire un truc. Excuse-moi, je vais peut-être partager juste la fenêtre. Attends, une seconde. Je vais partager tout mon écran, c’est peut-être pour ça. Une seconde. Fenêtre. Je ne sais pas si…
+
+[05:11 - 05:52]
+Non, non, ça doit être moi. Voilà. Normalement, là… Je vois. Super. OK. Donc là, tu as rattaché 1 et 3. OK, d’accord. Ce que je disais, c’était que… En premier, la seule chose que je disais, c’est cette box-là, là, très intéressante. Et ça a du sens de mettre tout en même temps. Et c’est un peu le truc auquel je reviens, forcément : c’est un peu comment on fait cette box. OK. Et après, je pense que la 1 et 3 doivent être reliées, puisque quand tu définis ta fonctionnalité…
+
+[05:53 - 06:22]
+Il faut qu’on détermine les… En fait, je pense que le 1… 1 et 3… En fait, je pense que c’est plutôt en parallèle : tu fais 1, puis tu fais 2 et 3 en même temps, si ça a du sens. Je partage. En fait, 1 te met le scope pour faire ton analyse, et après tu dis : voilà comment c’est censé fonctionner dans ce scope-là. Ouais. Et… En fait… Comment dire ? Euh… Ouais, un truc. Je réfléchis ici…
+
+[06:23 - 07:01]
+En fait, c’est un peu difficile aussi. Dans ma tête, je pense que je ne sais pas à quel point les requirements [passage mal reconnu] ici. Il n’y a pas, en fait, une section d’entre eux qui doit être ici, entre 1 et 2 ? Parce que je pense que tu as, si on parle behavior, tu as la fonctionnalité. Donc tu vas être, je ne sais pas, moi, l’OLC [sigle incertain], tu vois. Je pense que tu as une première étape de : en fait, c’est quoi, de manière très simple, mon behavior ? Et à partir de là, tu as…
+
+[07:01 - 07:31]
+L’analyse, le numéro 2 ici, et tu as la performance en 3. Je partage totalement. C’est peut-être le wording qui n’est pas bon, autant pour moi. Ce que tu viens de dire, pour moi, c’est un peu dans le functional baseline. Tu prends l’ACC, tu es censé avoir dans le bloc 1 : il marche dans tel ODD. D’accord, ça, ce sont des conditions de base. Et tu es censé aussi dire un peu ce qu’il est censé faire, typiquement. Donc là, c’est un peu ta functional baseline. Tu fais ton analyse de risques et après, c’est là où tu…
+
+[07:31 - 08:05]
+En fonction de ce qui a été défini dans la boîte 1, tu avais bien vu, tu seras en mesure, potentiellement, de rajouter en 3 de nouvelles exigences supplémentaires. Donc pour moi, les requirements, c’est plutôt les exigences supplémentaires qui répondent aux risques que tu as vus en 2, globalement. Tu vas enrichir. Voilà, je cherchais le mot. Excuse-moi. Tu n’as pas l’air convaincu. Si, je réfléchis, en fait, à un truc, parce que j’ai parlé avec Mike, Mike [nom mal reconnu].
+
+[08:10 - 08:40]
+Dire : OK, on va avoir, genre, la fonctionnalité, une fonction qui définit… Project requirement [terme incertain], ouais. Et ensuite, c’est à partir de là que tu te retrouves à aller dans le sens de SOTIF… SOTIF et behavior [passage mal reconnu] d’un côté, et FuSa [sigle incertain] de l’autre. C’est ça ?
+
+[08:40 - 09:24]
+Moi, ce que je dis là, et ce que tu dis aussi, mais j’ai peut-être mal compris, c’est qu’en fait, entre ce bloc ici et le 2, il y a un truc où tu dois développer le début de tes exigences, juste un début. C’est-à-dire que tu as… Imaginons, ta fonctionnalité, c’est de maintenir dans ta voie. Je pense que tu as une étape [passage mal reconnu]. J’ai un exemple, tu vas me dire si ça [passage mal reconnu]. Moi, j’ai l’ACC. Je prends l’exemple de l’ACC en tête.
+
+[09:24 - 09:52]
+J’ai un product requirement qui dit : l’ACC, je dois maintenir deux secondes de distance avec le véhicule qui est devant. OK, très bien. Et j’ai l’ACC qui me dit : je dois freiner à 0,5 g. Donc ça, ce sont les équipes produit qui ont défini ça. Donc ça, ce sont mes exigences de base. Donc c’est un peu le bloc que j’ai entre le 1 et le 2. J’ai des listes d’exigences qui viennent des équipes produit. Une fois que j’ai des exigences qui viennent de l’équipe produit…
+
+[09:52 - 10:21]
+Moi, je vais commencer à faire mon analyse SOTIF en partant de ces exigences-là, globalement. Enfin, plutôt : je dois suivre le véhicule de devant, je fais mon analyse SOTIF, etc. J’ai des risques qui sont établis, qui sont — je dis une connerie — du freinage intempestif. D’accord, c’est un risque où l’ACC freine alors qu’il ne doit pas freiner. Donc j’ai un risque. Le risque, il peut être safety ou SOTIF, pour l’instant, peu importe. Et une fois que je fais mon analyse SOTIF, je vais dire : ah, OK, donc là, je peux avoir un ghost. Un ghost, ce n’est pas une défaillance, c’est une limite de performance. J’ai mon freinage ACC à 0,5 g. Par contre, je peux dire, d’un point de vue SOTIF…
+
+[10:21 - 10:59]
+Ce n’est pas fou, 0,5 g. Ça peut être dangereux si je suis suivi par un véhicule de devant [passage mal reconnu]. Donc, en exigence SOTIF, ce que je peux dire, c’est : je fais d’abord un préfreinage à 0,2 g, et puis après je le complète avec un 0,5 g, par exemple. Donc là, je viendrais enrichir mon exigence, et ça, je le mettrais dans la boîte 3, au final. Mais mon exigence de départ, c’est bien mon exigence produit, qui dit bien 0,5 g, etc. Donc je pars de mon exigence produit, et après je vais la raffiner avec mon analyse SOTIF, s’il y a besoin. C’est ce que tu as en tête ou pas du tout ?
+
+[11:09 - 11:47]
+Je pense que c’est là où je veux [passage mal reconnu]. Le 3, c’est que si on enlève… Si tu es un ingénieur système et que tu es en train de développer tes performances, tu t’en fous du 2, je suis d’accord. Et donc, je pense que ce que je voulais… Là où je veux aller, c’est de dire que si on va dans la direction dont Mike avait commencé à parler, en disant : on est la même équipe et on est les mêmes personnes… Enfin, on est [passage mal reconnu] avec les mêmes équipes, enfin, la même équipe qui fait tout le behavior…
+
+[11:49 - 12:22]
+Je pense qu’on a intérêt à faire un schéma comme ça, mais qui prenne en compte système plus SOTIF. Et donc, il y aurait 1, 2, 3 côté SOTIF, et il y aurait 1, 2, 3 côté système, qui seraient différents. OK. Et qui eux-mêmes se parlent. C’est ça. Il y aurait des liens entre les… Oui. Parce que, par exemple, nous, pour le SOTIF, on va peut-être faire des analyses…
+
+[12:22 - 12:50]
+…un peu papier, et ensuite on va très rapidement aller dans la simulation. Alors que dans la simulation réelle… Je comprends. Tu as raison.
+
+[12:50 - 13:20]
+Je pense que si on va dans la direction où on a une seule équipe qui fait les deux, je pense que c’est important de vraiment distinguer les deux choses, pour ne pas qu’on se retrouve à créer un process où les ingénieurs système doivent attendre que le SOTIF soit terminé pour commencer à faire leur travail. Je partage. Il faut vraiment que ce soit fait en parallèle et ensemble. Tu as raison. OK, je vais essayer de le remettre à jour. Je vais essayer de le mettre sur Miro. Comme ça, toi, tu peux le retoucher aussi. Ça va peut-être être plus simple qu’un PDF à chaque fois.
+
+[13:20 - 13:58]
+Je vais voir si je peux le faire sur ton Miro, si ça ne te dérange pas. Je te crée une page en plus et je te le fais sur ton Miro. Celui que tu dessines à chaque fois. Je ne sais pas, c'est toujours le même Miro qui est ouvert. OK.
+
+[13:59 - 14:30]
+OK, et pourquoi est-ce que je vais faire ça ? Comme ça, moi, ça me permet de voir. Enfin, si tu es d'accord, ça permet après de se dire : OK, maintenant, il faut qu'on commence à produire ça, il faut qu'on monte tel document. Tu sais, qu'on commence après à dérouler. Je ne sais pas ce que tu en penses. Ouais, non, ça a du sens. OK, ça marche. Donc ça, c'était l'étape 1 que je voulais partager. Et le 2, c'était rapidement la correction de Scenario Studio, là. Le truc que je t'avais montré mardi, je l'ai retouché un peu.
+
+[14:30 - 15:06]
+Est-ce que je peux le partager aussi ? Je ne sais pas si tu as eu le temps d'utiliser tes tokens pour le faire, du coup. Je te montre après. Je suis un peu revenu plutôt sur mon design en me disant : oh là, attends, je vais faire un peu de design en premier, avant de foncer. Parce que j'ai commencé à faire un design doc et, en fait, j'ai commencé à comprendre qu'il y avait plein de trucs que je ne sais pas très bien et qu'il fallait peut-être faire de la [passage incertain] en premier. J'ai un peu aussi... J'ai plutôt fait des designs.
+
+[15:07 - 15:34]
+Mais je te montrerai quelques idées. Ça marche. Moi, si tu veux, je te présente ça et après, j'ai deux fichiers MD qui expliquent un peu comment ça fonctionne. Globalement, ce que j'ai fait, je suis reparti de l'idée que tu avais en tête : on enlève les agents, on fait un truc simple. J'ai un scénario ; de ce scénario, je mets des paramètres et ça me génère des scénarios... Pardon, j'ai une exigence, ça me génère des scénarios de cette exigence. Donc, je mets mon scénario, mon exigence qui est là. D'accord ? C'est là, il ne bouge pas. Ouais.
+
+[15:35 - 16:04]
+Là, si je rentre à la main les données dont j'ai besoin, le nombre de lignes [terme incertain], etc., comme ça, ça te génère tous les scénarios liés à cette exigence. Je te montrerai les différents acteurs, c'est ce que tu disais. Est-ce que j'ai un véhicule devant ? Oui, non. Est-ce que j'en ai un derrière ? Oui, non. Est-ce que j'en ai un sur la voie adjacente également ? S'il fait un cut-in, à quelle vitesse il fait le cut-in, etc. Et derrière, j'ai une table de vérité. Claude, il a réussi à me faire la table de vérité. Si je mets des données absolues [terme incertain], il me dit : bah non, le scénario ne marche pas, le cut-in est trop court, etc. Donc ça, il me l'a fait. Donc j'ai une grande table de vérité en code.
+
+[16:04 - 16:45]
+Une fois que tu cliques, si tout marche bien, je suis censé dire que j'ai revu... Voilà, j'ai revu les trucs. « At least one road ». Ça commence. Ça marchait tout à l'heure, excuse-moi. « Optional », on s'en fout, on s'en fout. Est-ce que là, ça marche ? C'est en haut. « Road type », j'ai mis « highway ».
+
+[16:45 - 17:15]
+Donc là, il me génère 54 scénarios. D'accord ? Donc là, il ne les a pas... Voilà. Donc là, il me les a mis ici. Et après, de là, sur ces scénarios, il me génère le fichier associé pour faire après, s'il y a besoin, l'OpenSCENARIO derrière. Et donc là, il met les scénarios à chaque fois. Donc « Ahead » et « Behind ». Donc là, j'ai un véhicule devant et derrière sur ce scénario-là. Donc j'ai ce scénario, mais j'ai un véhicule devant et derrière, globalement. J'ai ma vitesse, etc. C'était un peu ce que tu avais en tête ? Ouais, non, c'est pas mal.
+
+[17:15 - 17:42]
+Donc là, il est en mesure de me générer un peu les différentes combinaisons possibles aujourd'hui. Donc voilà, j'ai les 54. Après, je pourrais les exporter, s'il faut, directement en un ZIP avec chaque scénario et le code OpenSCENARIO associé. Il faut que je vérifie, mais après, si je mets des trucs un peu débiles, il est censé me dire : là, j'ai des scénarios qui ont été générés, mais ils ont été exclus. Donc, à ce moment-là, tu peux cliquer dessus et, toi, aller les revoir aussi pour être sûr qu'il ne s'est pas gouré, s'il y a besoin.
+
+[17:43 - 18:08]
+Et comment ça consomme l'exigence en elle-même ? Qu'est-ce qui est extrait de l'exigence ? Je vais te montrer. Est-ce que je peux voir ça ? C'est des mots-clés dans le code, globalement. Quand j'ai fait mon code, je lui ai dit que si tu as le mot « shoulder » [mot incertain], c'est ça. Si tu as le mot « ego », c'est ça. Si tu as le mot « vitesse », c'est ça. Parce que, du coup, on ne voulait pas utiliser d'agent, tu te rappelles ?
+
+[18:08 - 18:39]
+Du coup, c'est dans la table, un peu, de vérité, dans le code, derrière le HTML, où il y a tout ça. Est-ce que je peux te partager cette page ou pas ? Comment ça marche, ça ? Je vais faire comme ça, désolé. Du coup, tu ne pourras pas griffonner dessus, sinon je ne vois pas. Désolé, je te fais partager tout l'écran. Voilà. Donc là, j'ai essayé de te faire... Donc un, c'est le mode d'emploi. Bon, là, il me l'a fait en français ; je le ferai en anglais après. Donc là, il explique un peu, globalement, comment ça fonctionne. Donc là, j'ai toute l'explication.
+
+[18:39 - 19:05]
+Et ensuite, derrière, j'ai le générateur d'exigences et la référence. Je pourrais te montrer le code aussi derrière, si tu veux ; je te le mettrai sur Git. Et après, il te dit les scénarios générés, comment est-ce qu'il extrait à partir d'une exigence les trucs derrière, globalement. Donc j'ai essayé de le construire comme ça. Il faut que je continue encore à l'itérer, etc., pour être sûr que ça fonctionne.
+
+[19:05 - 19:51]
+Mais je ne sais pas si ça répond exactement à ta demande que tu avais eue mardi. C'est plus ça, dans l'idée que tu avais ? Ça peut être utile. C'est pour ça que je disais, moi, ce que j'ai essayé de faire, c'est un peu de prendre un petit pas en arrière et de regarder un peu tout le process. Ça marche. Si tu veux, je peux te montrer rapidement ce que j'ai en tête. Vas-y, vas-y. Ça pourrait aider.
+
+[19:51 - 20:27]
+Parce que, du coup... [passage incertain sur les droits de partage]. C'est fou, ça. Comment je fais ? Alors, outils, l'autre participant... Je n'ai aucune idée de comment on fait. Je suis vraiment un handicapé. « Verrouiller la salle » : pas du tout. « Participant »... Bah non, toujours pas. Est-ce que je n'ai pas un petit bouton, là ? « Paramètres » ou un truc ? « Paramètres ». J'ai toujours un participant neuf [passage incertain]. Ah, je sais. C'est bon, il faut que je clique sur ton nom.
+
+[20:28 - 21:09]
+Je vais te nommer animateur, je ne sais pas si ça va aider. [Passage incertain] sur le côté, genre : OK, on fait comment, on écrit des concrets. Et en fait, je me suis dit : il y a un truc plus gros que ça. Donc c'est un peu de tout connecter, voir comment ça marche.
+
+[21:09 - 21:44]
+En fait, je me suis dit aussi : pourquoi ne pas finalement intégrer quasiment tout le SOTIF dedans ? Et comme ça, on intègre tout le SOTIF dans une même toolchain. Donc l'idée, si on prend du début... En réalité, c'est : imaginons, on a... Imaginons qu'on a, genre, un repo sur GitHub qui peut... Tu as tes behaviors. Tu as la liste de tous les behaviors : les behaviors sur highway, les behaviors en surface street, etc. Juste pour être sûr : quand tu parles de behavior, c'est « quand j'ai ça, je fais ça ; quand j'ai ça, je fais ça ». On est d'accord ? C'est ça, globalement, les behaviors ?
+
+[21:44 - 22:20]
+Non, je parle de behaviors un peu plus haut niveau. Donc, genre, « adaptive follow ». C'est genre des noms, des noms, des tasks. Donc tu as, genre, « lane change » : ça va être un behavior. Tu as « follow », « follow », « lane cruise control »... Enfin, comment on appelle ça ? « Lane centered cruise », un truc comme ça. Tu as vraiment des hauts niveaux qui représentent plusieurs behaviors, plusieurs actions, plusieurs manœuvres.
+
+[22:20 - 22:49]
+Le camion est en mesure de faire un lane change, de faire un suivi, c'est ça, un peu, l'idée ? C'est ça. C'est les fonctions du véhicule. On peut les appeler les fonctions [passage incertain]. On a une liste de tous ces behaviors. Pour chaque behavior, on a une liste de scénarios qui sont des abstracts ou des logicals, selon comment tu les appelles.
+
+[22:49 - 23:22]
+Je vois l'idée. Donc ça va être, en gros, la famille, en mode : je suis sur l'autoroute, il y a un véhicule devant moi ; ça sera un abstract. Et du coup, ça sera un catalogue qui existe dans le repo. Une UI où les gens peuvent rajouter des scénarios s'ils le veulent. Tu es, en gros, sur un repo, tu cliques sur un HTML, tu peux ajouter des scénarios : celui qui n'existe pas, que vous voulez rajouter.
+
+[23:22 - 23:53]
+Si tu fais ça, est-ce qu'il faut que tu puisses le rattacher, du coup, au behavior derrière ? Il faut que l'outil le fasse. D'accord, je comprends.
+
+[23:53 - 24:18]
+Dans Jama, tu auras les abstracts. Dans Jama, tu auras les abstracts et les behaviors, qui sont directement là. Que tu récupères ou que tu pousses ? Est-ce qu'on part du principe qu'on en a et qu'on les prend en entrée, et après on fait notre outil et on peut porter les nouveaux ? Ou est-ce que c'est juste qu'on écrit dans notre outil et, à la fin, on pousse tout sur Jama ? Tu vois, dans les deux sens ? Je pense qu'on pousse tout sur Jama.
+
+[24:18 - 24:48]
+Et ce qu'on récupère de Jama, c'est les relations. En gros, on a un script qui crée le... qui pousse sur Jama, crée les relations avec, genre, l'ODD, etc., qui, lui, existe dans Jama. OK. Et ensuite, tu récupères tout, donc tu récupères les relations pour ensuite créer, genre, un dashboard qui explique tout ce qui est relié. Pour un behavior, du coup, tu as tout qui est relié. Et tu as déjà des behaviors dans Jama. On part du principe qu'on ne les prend pas en compte, on fait les nôtres directement ? Ouais. OK, c'est les mêmes, c'est les mêmes. On récupère, je pense qu'on récupère les mêmes. [Passage incertain] supprimer des choses et refaire. [Passage incertain]. C'est ça. OK.
+
+[24:49 - 25:18]
+L'autre truc que je me suis dit, c'est : en fait, pourquoi ne pas rajouter le HIRE directement là ? J'aime bien. Parce qu'un HIRE, finalement, c'est l'abstract. Du coup, tu auras l'abstract avec le HIRE qui sera associé. Pour chaque abstract, tu sais quel est le hazard associé et quelle est l'évaluation du risque que tu as faite. Et tu pourras le faire directement avec l'UI. Donc, du coup, tu pourras rajouter un scénario en plus. Soit c'est optionnel : tu te dis, non, je ne sais pas encore ce que c'est, mon risque.
+
+[25:18 - 25:48]
+OK. OK.
+
+[25:48 - 26:17]
+Comme ça, ça te génère autant de scénarios concrets, en fonction des waypoints, etc. OK. Ça, on ne les stocke pas, on s'en fout complètement [passage incertain] ; on voit juste qu'ils existent. Parce que ça les crée de manière random, c'est randomisé, donc tu ne sais pas... Enfin, tu t'en fous un peu de ça. Ensuite, tu peux les trans... Par contre, ce que tu récupères en sortie, c'est un OSC, un OSC que tu donnes à... OK, d'accord. L'OSC, par contre, lui, on le garde. Oui. Du coup, on a un catalogue avec les OSC.
+
+[26:19 - 26:50]
+Qui gardera en mémoire le concrete et l'abstract, comme ça il sait [passage incertain]. Tu le pousses dans TorSim pour le simuler, tu récupères les résultats. Et les résultats, tu peux directement les pousser au behavior : tu les pousses à l'abstract et tu les pousses au behavior. Comme ça, tu peux dire : cet abstract, je sais que j'ai déjà simulé 500 concrets ; il y en a eu [passage incertain] 490.
+
+[26:50 - 27:16]
+Tu [passage incertain]... Tu n'as pas besoin de stocker quels sont les concrets ? Tu sais ce que c'est, les OSC format, tu sais lesquels c'est. Pour ton abstract, tu sais combien tu en as déjà... Quels étaient les résultats dans TorSim. Et ensuite, tu as un dashboard, behavior par behavior, où tu peux voir quels étaient tes résultats. Et ensuite, tu peux voir dans les détails : ah, c'est cet abstract que j'ai raté. Et ensuite, tu peux recliquer, ça te donne exactement quels concrets tu as ratés.
+
+[27:16 - 27:46]
+OK, j'adore. En fait, tu fais tout le end-to-end, en fait. OK.
+
+[27:47 - 28:19]
+[Passage incertain]. Il connaît nos exigences et il est capable de dire : OK, pour cette exigence-là, qui est peut-être une nouvelle exigence... Et il te dit : ah, mais tu n'as pas pensé à ça. Et il te donne un abstract que tu ne connais pas. OK. OK. Tout ça, c'est manuel ; tout le bas, c'est manuel, en gros. Enfin, c'est manuel dans le sens où toi, humain, tu crées l'abstract, et ça va directement pousser tout à droite.
+
+[28:20 - 28:42]
+Automatiquement. Et ensuite, si toi, par exemple, tu n'as plus d'idées d'abstracts, tu peux utiliser cet outil-là avec un agent qui te donne des idées. OK. Question : je sais que tu n'as pas la réponse, mais je la pose quand même, ça me traverse l'esprit. Quand je vais faire...
+
+[28:42 - 29:10]
+Quand on va faire la partie scénario, les scénarios, aujourd'hui, on les fait principalement sur la dynamique du véhicule. C'est quelque chose qu'on sait simuler sur TorSim, au final, globalement. Et on part du principe que la perception est parfaite. C'est ça, aujourd'hui, qu'on fait. Comment on va brancher l'ODD ? Parce que là, tu as marqué sur la colonne numéro 3 : « Link to ODD characterization ». Ce que je vais prendre sur le « Link to ODD characterization », c'est que je dois enlever tous les trucs qui vont être en lien avec la perception, au final.
+
+[29:10 - 31:37]
+Je pars du principe que tout ce qui est mauvaise météo, etc., je ne peux pas le mettre dedans parce qu'on ne sait pas le simuler. On est d'accord ? OK, d'accord. Alors, en fait, moi, ce que j'ai en tête ici, pour celui-là, c'est genre les waypoints, les waypoints, et... [passage incertain]. Je comprends. Et les waypoints, en face, tu as [passage incertain]. Ça marche ou pas, le bundle [mot incertain] ? Aucune idée. Allô ? Toujours là ? C'est la limite. Je ne sais pas si ici, c'est peut-être ça. Je ne sais pas trop.
+
+[31:38 - 32:15]
+C'est pas moi, j'ai eu le... « Il vous reste dix minutes », et tu as disparu. Bah moi aussi. Bon, désolé. Vas-y. Tu peux me redonner les droits, s'il te plaît ? Ouais. Ouais, donc, je faisais pour ça, c'est [sigle incertain]. Mais oui, j'ai la même question que toi en tête : de ça à tout ça, ça marche bien pour, genre, du behavior-centric. Et ensuite, il y a, en fait, pour la perception, où est-ce que c'est ? Le... perception.
+
+[32:15 - 32:54]
+Du coup, tu as... Ici, tu as les FI/TC [sigle incertain]. Il y a la perception, où est-ce que tu sais que ça existe ? Il y a le... qui est un peu relié. Du coup, si tu vois des problèmes sur le truck, il y a de grandes chances que ce soit plutôt lié à la perception. Donc ça, c'est plutôt, genre, le triage. Le triage qui est là, [passage incertain] triage, la perception, qui aussi fait perception. Parce que ça, c'est plus simple à faire quand c'est que du behavior.
+
+[32:56 - 33:24]
+Mais il y a un moment où tu ne verras pas tout, tu ne verras qu'une partie du SOTIF. Du coup, il y a un moment où il faut aussi qu'on voie... Les FI/TC [sigle incertain]. Après, les FI/TC, ce n'est pas que de la perception. Donc peut-être que les FI/TC qui ne sont pas liées à la perception, on peut les intégrer. Par contre, les FI/TC qui sont liées à la perception, je suis d'accord. Là, on pourra... À vue d'avion, comme ça, je ne vois pas comment les mettre.
+
+[33:24 - 33:54]
+Après, le côté positif, c’est qu’on peut créer la chaîne et les outils sur le truc simple, qui est le behavior, où tout marche dans TorSim, perception parfaite, on s’en fout. Et rajouter des choses après. On pourra, par exemple, rajouter des attributs dans les abstracts en disant : « Tiens, ça, c’est FI/TC. » Et du coup, tu pourras avoir une autre pipeline qui alimente ce catalogue, qui vient du triage, par exemple, ou de la real life.
+
+[33:55 - 34:19]
+Et après, oui, tu as les FI/TC avec le FI node dans TorSim, qui sera aussi une autre ligne vers la droite, comme ça, où c’est la même chose, sauf qu’en plus de ça, tu récupères… Enfin, je pense que c’est plutôt ici, ou ici plutôt. C’est ici, en fait : tu peux rajouter le FI node ici.
+
+[34:22 - 34:50]
+Tu utilises les mêmes scénarios, parce que je pense que c’est là qu’il y a l’intérêt de l’histoire des scénarios. Tu les gardes en perception parfaite et tu peux comparer à ce qui se passe si j’ai mon FI activé sur telle chose. Il fait jour, nuit, il pleut… Tu rejoues le scénario dans ces conditions. — OK pour ça. Et question : je crois que c’était Mathias qui posait la question, qui mentionnait ça. Lui, il fait des exigences.
+
+[34:51 - 35:30]
+En théorie, quand tu fais une simulation, c’est un peu la partie vérification, validation. C’est-à-dire que tu vas vérifier et valider une exigence. Ces exigences, tu les vois entre l’abstract et le concrete ? C’est-à-dire qu’un abstract, je suis censé le rattacher à des jeux d’exigences, et ensuite je les valide en concrete. Ce serait là que tu placerais les exigences système/SOTIF ? — Oui, je pense que quand ton exigence…
+
+[35:32 - 36:03]
+Ce que je pense, c’est que c’est un autre outil à créer. Ce serait un outil qui existerait dans celui-là. Il y aurait deux possibilités : si tu es un ingénieur SOTIF, tu prends ton abstract, tu crées tes machins. Mais si tu es un ingénieur système qui a son exigence, tu sélectionnes tous les abstracts qui t’intéressent pour ton exigence, l’environnement dans lequel ton exigence s’applique, et ce sera là que tu créeras tes scénarios.
+
+[36:04 - 36:33]
+C’est un peu le même. Pour moi, il y a vraiment un use case un peu similaire à SOTIF, mais qui serait beaucoup plus ciblé : ce serait pour cette exigence-là. — OK, ça marche. Moi, je peux faire ça. Je vais reprendre, je vais partir de la branche 1. Je vais partir des behaviors et abstract scenarios, et aller jusqu’aux concretes. Et je vais juste faire la partie simple, celle qu’on est en train de traiter, là : [nom du cas peu audible].
+
+[36:33 - 37:05]
+Parce que de là, finalement, on a déjà la chaîne, on a déjà les premiers behaviors, je crois, sur Jama, etc. Donc je peux essayer de repartir juste sur un exemple. — OK. OK.
+
+[37:06 - 37:45]
+OK. Donc ça, je suis en train de faire ça, et un peu dans le background, je suis en train de commencer à faire ça aussi. Sachant qu’en fait, il y a le… Parce que toi, ce que tu as créé, je pense que c’est intéressant pour… En fait, il faut voir si on veut réussir à combiner nos deux trucs. Parce que ton truc est utile, mon truc est utile.
+
+[37:45 - 38:18]
+[Passage non transcrit avec fiabilité.] C’est pas mal, ça.
+
+[38:18 - 38:57]
+OK. Tu as quoi en abstract, par exemple ? [Suite peu audible.]
+
+[38:57 - 39:28]
+Les véhicules, par exemple. Les véhicules qui changent [passage peu audible], le speed. Les véhicules qui s’arrêtent [terme peu audible], etc. — OK, donc ça, c’est ça… D’accord, je comprends. — Alors, deux choses. [Passage peu audible.] Ils ont un Excel avec toutes les listes et tous les types, tout ce qu’ils ont. Ils n’en ont pas beaucoup. Ils en ont cent quatre, je crois [nombre incertain]. [Passage peu audible.] Mais voilà, ils ont des abstracts qui existent, ils sont là.
+
+[39:28 - 39:59]
+OK. Les abstracts, c’est plutôt ta colonne B, au final, c’est ça ? Ah non, c’est ta colonne A, B. OK. — A, c’est une famille, et B, c’est l’abstract. — OK. — Sachant que moi, maintenant, je le vois plutôt comme ça : nous, on n’aura pas de famille, on aura le behavior. — C’est ça. — À la place, on a un behavior, et ensuite tous les abstracts qui sont sous ce behavior. — OK. Et qui peuvent se rejoindre, c’est-à-dire qu’un behavior peut avoir les mêmes abstracts. [Passage peu audible.] — Oui, je suis d’accord. Et vice versa.
+
+[39:59 - 40:29]
+Mais je pense que c’est important de garder la différence. [Passage peu audible sur le partage des abstracts.] On aura deux points de vue. Je pense que c’est comme ça qu’on fera. — OK. Du coup, moi, qu’est-ce que je peux faire là-dessus ? Si toi, tu fais la partie abstract, je peux essayer de faire la connexion behavior, abstract, concrete scenario sur un truc simple. Juste voir déjà si ça marche sur un truc, sur une ligne.
+
+[40:30 - 41:00]
+Si ça te va. Et après, je pourrai intégrer ton catalogue derrière. Du coup, c’est pas gênant, ça. — Oui, ça serait pas mal de faire des exemples un peu simples pour voir. Je pense aussi que là, c’est vraiment une version simplifiée, et qu’il y a des problèmes qu’on verra dans le futur. À force de le faire, on se dira : « Tiens, il faut qu’on rajoute ça. » Je pense que c’est bien d’avoir des petits exemples. Et je me dis aussi : faire des exemples manuels d’un behavior, d’un abstract, d’un concrete…
+
+[41:00 - 41:33]
+Des formats OSC, des trucs comme ça. Comme ça, on a des exemples. On dit : « Tiens, votre outil devrait créer ça. » Et si tu arrives à faire la même chose, oui. — OK. Et le HIRE, tu l’as mis où, toi, là-dessus ? Tu l’avais mis côté abstract, on le mettrait ici, c’est ça ? — Oui, il est là, le HIRE. — OK, ça marche. Est-ce qu’idéalement, le HIRE serait généré automatiquement à partir des behaviors ? Ce serait pas mal aussi, si on pousse le truc. — C’est-à-dire, automatique ? — C’est-à-dire que je mets mes behaviors…
+
+[41:33 - 42:03]
+J’appuie sur un bouton, il me génère mes HIRE, mon abstract, il me fait mon concrete. Tu sais, on pourrait tout faire en automatique, au lieu de faire le HIRE comme on l’a fait, nous, manuellement. — Comment tu évalues le risque automatiquement ? Ou tu voudrais faire un truc où, par exemple, avec les vitesses, la sévérité va plutôt être S3 ? — C’est ça.
+
+[42:03 - 42:30]
+Et la contrôlabilité, ça va plutôt être C3 parce qu’on est sur highway, et il te calcule tout ça automatiquement. — Oui, ça serait ça, l’idée. Mais du coup, là, on collerait des agents. Mais c’est pas gênant, en vrai. — [Passage peu audible à propos du besoin d’agents.] Si tu as juste des mots… Je pense que c’est une table de combinaisons qui n’est pas très compliquée. Je vais voir. Dans tes abstracts, tu auras ton paramètre avec sa range.
+
+[42:32 - 42:58]
+Donc tu sauras qu’on est sur highway. Cet abstract te dira : on est sur highway, la vitesse est entre 40 et 65, par exemple. Et il y aura le nombre d’acteurs. Je pense que ça, c’est déjà suffisant, juste avec une table, pour savoir quelle contrôlabilité, quelle sévérité c’est. — OK. — Et après, je pense que l’exposure, enfin l’occurrence aussi, c’est pareil. Il y a une table assez simple à faire. Je pense que tout ça se fait avec une table très simple.
+
+[42:58 - 43:27]
+OK. Et comment est-ce qu’il me générerait après les scénarios, le HIRE, etc. ? Comment est-ce qu’il ferait ? C’est une combinaison aussi, au final ? — Oui, je pense que tout est juste une combinaison. Et c’est pour ça que je pense qu’il y a plein de checks. Ce qu’il faudra aussi qu’on fasse, c’est plein de checks sur ce qui existe déjà, parce qu’il ne faut pas que ça refasse les mêmes choses. — Oui, je suis d’accord. — Donc ça, il y aura des checks.
+
+[43:27 - 43:55]
+Et après, ce serait intéressant aussi de créer un agent qui vérifie de temps en temps. Qu’il fasse des sanity checks et qu’il dise : « Tiens, ça, c’est bizarre. Regardez ça. » Il nous donne une liste : « Regardez ça, c’est bizarre. » Ou : « J’ai vu ton HIRE, moi, je n’ai pas vu ça. Est-ce qu’il faudrait le rajouter ? » Tu vois, ça pourrait être ça aussi. — Oui. — Ce serait bien d’avoir ça sous forme d’un agent que tu peux lancer de temps en temps, et tu lui dis : « Tiens, regarde mon truc. »
+
+[43:55 - 44:27]
+Et il est habitué parce que ça fait longtemps qu’on l’utilise, il connaît tout, il dit : « Tiens, c’est bizarre, ça. » — OK : behavior, abstract, concrete et le HIRE. OK, pour la semaine prochaine, sur un exemple simple, et voir ce que ça donne. — Moi, je crée le catalogue, je crée l’outil pour les concretes tel que je l’avais dans ma tête. Comme ça, on peut voir nos deux outils et les mettre ensemble. Donc, normalement, j’aurai ça aussi qui sera dedans, parce que c’est la même chose.
+
+[44:27 - 45:00]
+Oui, ça, c’est la sortie. Après, ce sera créer l’outil pour tout ce qui est abstract, le storage de tous les abstracts, l’UI et tout à faire. Pareil pour behavior : ce sera l’UI à faire. Tu as accès ? Est-ce que tu n’as pas encore eu accès, je pense, au repo ? — À ton Git ? — Oui, je crois que même Miguel a dû demander, mais je ne sais pas si tu as eu accès encore. — Est-ce que j’ai eu un message pour Git ? Je n’ai pas vu de message de Git.
+
+[45:01 - 45:36]
+Non. Il a dû faire la demande, je pense, il n’y a pas longtemps. Hier, ou quelque chose comme ça. Donc, pas encore. Tu devrais l’avoir bientôt, normalement. — Peut-être aujourd’hui ou au début de la semaine prochaine, du coup. — Oui. — OK, nickel. On peut se faire un point… Là, je pense qu’on peut se donner un peu de temps, peut-être jeudi. — Jeudi, ça me va. — Et pour l’UX, tu as une préférence en termes de visuel ? Tu as une direction artistique que tu aimerais pour l’UX et l’UI ?
+
+[45:37 - 46:08]
+Je ne sais pas, je pense que ce sera un des trucs que je ferai avec le concrete scenario. Dans ma tête, je pense que je me poserai ces questions-là. Et on pourra peut-être parler de ça la semaine prochaine. Je pense qu’on aura un peu plus d’idées de ce à quoi ça ressemble, de la complexité du truc. — Ça marche, je suis d’accord. Tout ce qui est UI, UX, je pense qu’on peut faire ça plus tard. Pour l’instant, restons avec tout ce qui est catalogue, comment on stocke les données : qu’est-ce qui est un JSON file, qu’est-ce qui est autre chose ?
+
+[46:08 - 46:36]
+Qu’est-ce que tu as en tête quand tu vois le « known result » dans la colonne numéro 1 pour les behaviors ? Ce n’est pas propre aux behaviors, du coup ? Ce sont les résultats ? — Ce sont les résultats de TorSim pour les abstracts. En gros, tu as les derniers résultats connus pour tes abstracts du behavior, et tu as un dashboard qui sera sur ton behavior. Tu auras les résultats connus.
+
+[46:36 - 47:05]
+D’accord, ce sont les résultats connus de ton behavior que tu as testé via TorSim. OK, j’ai compris. — Et je pense que ce sera aussi intéressant d’avoir un dashboard par route. Il faudra qu’on fasse ça aussi. — C’est pas con. Vu que tu as les waypoints qui sont dans la colonne 3, ça se trouve, tu ne vas pas réagir de la même manière en fonction des routes. C’est ça, l’idée ? — C’est ça. Surtout quand TorSim devient de plus en plus complexe, ils ont rajouté des trucs. — Oui, je pense que c’est ça. C’est pas con.
+
+[47:05 - 47:32]
+Tu verras peut-être des scénarios en plus. Si tu as une route où tu n’as pas de [terme peu audible], tu auras peut-être un taux de réussite plus élevé sur ce behavior. Ou autre chose. — OK. Et pour les behaviors, pour l’instant, je ne veux pas… — Non, j’allais dire : behavior, pour l’instant, c’est encore un peu… Je pense que c’est ouvert sur ce que c’est ici.
+
+[47:32 - 48:06]
+Si ça se trouve, on va prendre des fonctions, des tasks, d’autres choses. Pour l’instant, c’est ouvert : qu’est-ce qui est le plus haut niveau d’abstraction ? — OK. Bon, c’est intéressant. Ça marche. Et c’est top, ton schéma, c’est très clair. Merci beaucoup, Matt. Et sur le premier point de Mike, je te mets le diagramme sous Miro.
+
+[48:06 - 48:48]
+J’essaie de te faire ça, et on pourra en parler aussi la semaine prochaine. Je ne sais pas comment tu vois la suite avec Mike. Je crois que vous avez un workshop la semaine prochaine, non, c’est ça ? — C’est dans quinze jours, je ne sais plus. [Échange peu audible sur les invitations.] Non, tu n’es pas invité. Je demanderai à Mike. Parce qu’en gros, on a un petit workshop demain, lundi et mardi, pour préparer la partie SOTIF pour le workshop. — OK.
+
+[48:49 - 49:10]
+Mais après, ce sont de longs workshops de deux heures. Je peux juste y aller avec ce que tu as préparé. — OK, ça marche. L’idée, tu sais, c’était juste de coller des livrables sur des activités à faire et de voir ce qu’on produit derrière, ou ce qu’on peut réutiliser pour remplir telle action, telle action ou telle action.
+
+[49:11 - 49:31]
+OK, nickel. Moi, il faut que je passe à une autre réunion [fin de phrase peu audible]. — Vas-y, excuse-moi, désolé. Bon courage. Bon week-end. Je t’enverrai une invite [fin de phrase peu audible]. — Ça roule, on fait comme ça. Allez, bon courage. Bon week-end à toi. Bonne soirée, bon week-end. Ciao.

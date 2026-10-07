@@ -1,0 +1,31 @@
+# ASAM OpenSCENARIO DSL 2.0.0 authoring template, NOT executable or parser-validated.
+# behavior : BEH-HW-LANE-CHANGES-OVERTAKING | Lane Changes / Overtaking (Highway)
+# abstract : ABS-HW-LC-SHOULDER-STOPPED-VEHICLE v1 | sut_lane_change_for_stopped_vehicle_on_shoulder
+# concrete : SCN-b4af6c1e91b38d73 | engine status draft_for_engineering_review
+# hire     : HW_ Lane Changes / Overtaking_No Steering_04 ; HW_ Lane Changes / Overtaking_Insufficient Steering_04 ; HW_ Lane Changes / Overtaking_No Deceleration_01 ; HW_ Lane Changes / Overtaking_No Turn Signal_01
+# expected : Vacate the lane next to the shoulder when the adjacent lane is safe, otherwise slow down (TX TRC 545.157 logic for EMV; courtesy for a plain stopped vehicle). Candidate oracle, not a pass/fail criterion yet.
+# The SDT response is observed by the ADS in the loop. It is never scripted below.
+import <BASIC_OSC_PATH>
+import <MAP_VERSION_OSC_PATH>
+
+scenario sut_lane_change_for_stopped_vehicle_on_shoulder_scn_b4af6c1e91b38d73:
+    map: Map
+    map.set_map_file(map_version)
+    ego_vehicle: Truck
+    # road: highway, 2 lanes, ego starts rightmost
+    shoulder_vehicle: Vehicle
+    front_vehicle: Vehicle
+    do serial:
+        initialization: parallel(duration: 2s):
+            ego_vehicle.drive() with:
+                position(at_point: geodetic_position_2d(latitude: <EGO_LAT> deg, longitude: <EGO_LON> deg), at: start, project_on_route: true)
+                speed(20 mps, at: start)
+            shoulder_vehicle.remain_stationary() with:
+                position(80 m, ahead_of: ego_vehicle, at: start)
+                # fully on right shoulder, inner-edge offset 0 m, width 2 m, shoulder 3.6 m
+            front_vehicle.drive() with:
+                position(30 m, ahead_of: ego_vehicle, at: start)
+                speed(15 mps)
+                lane(same_as: ego_vehicle, at: start)
+        observation: parallel(duration: <OBSERVATION_S> s):
+            # <ADS_CLOSED_LOOP_OBSERVATION_BINDING>

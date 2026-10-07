@@ -1,0 +1,114 @@
+# Transcription : WhatsApp Audio 2026-09-20 à 21:18:47
+
+Durée : 46 min 06 s. Langue : français.
+
+Transcription automatique, non relue. Un des deux interlocuteurs est très peu audible, une partie de ses interventions manque ou est approximative. Les termes techniques et noms propres sont à vérifier.
+
+---
+
+**[00:00]** Je suis en train de récupérer des accès pour faire un truc, ça a pris plus de temps que moi. Ok, tiens moi de soucis. Laisse-moi juste allumer la lumière. Et normalement la connexion devrait être meilleure, j'ai changé ma boxe. J'arrive. Super. Comment tu vas ? C'est une bonne chose. Moi aussi, je n'ai pas trop mal avancé sur le mapping. C'est pas trop mal.
+
+**[00:46]** Je peux te partager si tu veux. par si t'as des sujets au particulier Je vais aussi prendre le recul de l'accès Je te montre ça en attendant Donc là normalement c'était censé voir un fichier Excel Si je dis pas de bêtises Super Donc là, colonne A Je vais peut-être zoomer un peu Voilà Colonne A c'est les scénarios du PDF celui qui les ingé avais fait D'accord Sur cette colonne, j'ai essayé de faire le mapping avec les exigences.
+
+**[01:33]** Donc là, ce que tu vois colonne E, c'est les exigences que E avait mis dans le PDF. Ok ? Donc là, quand ça permet de faire le mapping avec leurs exigences à E dans un premier temps. Ensuite, quand tu dis exigences, dans certains cas de figure, tu peux aussi rajouter d'autres exigences. En plus de ce que E avait mis. Typiquement, elle a mis la 15-222, la 15-227 et la 15-228. Je pense que ça couvre aussi le scénario 1, typiquement. également et là j'essaie d'expliquer pourquoi. Typiquement là le scénario 1 c'est celui que tu avais montré c'était celui que tu as vécu sur le bas côté. Typiquement l'exigence 27 et 28 il dit que tu es censé réduire ta vitesse par exemple dans certains cas de figure dans ce cas de figure là tu es censé réduire la vitesse donc pour moi l'exigence 27 et 28 elle aussi est éligible à ce scénario là typiquement. Ensuite Claude m'a proposé
+
+**[02:24]** aussi de rajouter la 13. La 13 j'ai un peu plus de mal avec la colonne H et Y c'est ce que Claude propose en plus de ce que j'ai mis. Faut que je regarde un peu dans le détail, ce qui m'a bouffé pas mal de tokens pour faire ça. Mais il y a des choses qui sont intéressantes d'autres où je suis un peu moins convaincu en toute transparence. Mais en tout cas une fois qu'on fait ce mapping, on s'aperçoit que la plupart des exigences, on arrive à les rattacher à au moins un scénario. Déjà. Donc ça ça permet de faire le mapping PDF vers les exigences Jama. Ça c'est le premier point. C'était la première flèche qu'on s'était dit. Je ne sais pas si tu souviens. La deuxième flèche qu'il y aura à faire et j'ai prévu de faire ça dans la semaine. Donc c'est de finaliser ça et ensuite c'est de commencer à regarder les scénarios de
+
+**[03:11]** OpenSCENARIO. Le fichier zip que tu m'as mis. Et là maintenant c'est de faire ce deuxième trassa entre guillemets. Pour voir comment est-ce qu'après on garantit que les scénarios d'OpenSCENARIO on arrive à les rattacher aux exigences Jama et si on n'a pas où est le trou et qu'est ce qu'il faut faire pour que ça fonctionne pour moi ça c'est la deuxième étape. Donc voilà où j'en suis, ça je vais pouvoir te le mettre en ligne. Donc après j'ai fait dans l'autre sens une exigence rattachée à un ou des scénarios. On parle dans les deux sens à chaque fois. Et à la fin, tu arrives à avoir une matrice. L'exigence, est-ce qu'elle couvre tel scénario, tel scénario, tel scénario etc. En fait, tu as ton mapping et ça permet de voir que la plupart des scénarios, on arrive
+
+**[03:56]** elle est rattachée à... la plupart d'exigences, pardon, elle est rattachée à au moins un scénario. Il y en a certains où je n'ai pas trouvé de scénario, il faut que je regarde encore un peu, typiquement la 167, celle-ci je n'arrive pas à lui trouver de scénario, de scénario qu'il y a dans le PDF. Donc on a une exigence, je n'arrive pas à la rattacher à un des scénarios du PDF, peut-être que j'arriverai à la rattacher par contre à un scénario de OpenSCENARIO. Il faut que je vérifie. Après. Si. Alors je vais ouvrir le fichier ce que je l'ai ici, la 67. Du coup les contraintes, comme ce sont les contraintes générales qui sont dans un mode
+
+**[05:09]** de biforesté dans la voie, les exigences là, et les deux fêtes testées par tous les scénarios, parce qu'il y a un de ces contraintes c'est des violence. Ah j'ai compris. Je sais pas si c'est ça mais c'est comme ça que je l'ai un peu un tout les scénarios ou voir comme... Je vois c'est un peu, on a pu s'incomprendre ou des normales billets vieux, ou nominal biais vieux ou des choses comme ça, des liens de base un peu. 233 je vérifie mais je pense
+
+**[05:58]** que tu ayens la 2 donc je pense que c'est un bon point. T'as celle-ci SDT, slowdown for approaching et un from rear. Il y a celui là aussi, c'est les deux que j'ai pas réussi à rattacher pour l'instant. Je vais vérifier mais c'est un bon point que tu lèves Mathieu, je vais vérifier quand même pour être sûr. je vais vérifier mais non cette matrice là je pense que ce sera ça un peu le livrable final pas besoin d'avoir un peu cette photo dans un premier temps sur les deux premiers documents ça normalement je vais pouvoir te le faire je pense d'ici demain ça devrait être fait normalement c'est tout va bien et comme ça vendredi j'attaque la partie avec le mapping open scenario et Et euh... Ah bah vas-y alors, du coup c'est top.
+
+**[06:46]** Euh... Je te laisse la main. Un peu moins sérieusement, on va dire que c'est un peu du... Tiens, il y a quoi ça sonne? Ok. Euh... Alors j'ai fait deux, trois exemples moi-même après. C'est un scénario, moi j'ai fait le premier. Et c'est parti. Radio du BDF. Qui est scénario du BDF?
+
+**[07:43]** Quand tu dis un scénario, c'est un scénario à toi ou c'est un scénario à eux? Je sais pas pourquoi je... C'est un scénario à nous. Ok. Ca roule. Scénario, OpenSCENARIO. Ok Sur les légacies qui avaient émergé la civilité, il y a dit la même chose que moi, c'est de la paix pour ce que je voulais faire
+
+**[08:31]** Ok, ça marche Ok Et en fait Très clair Vous verras ce n'est rien là
+
+**[09:16]** Ok Donc un exemple là Genre sur la gauche, etc. pour être qui se déplace ou juste comme ça, ok d'accord
+
+**[10:25]** Je me permets là-dessus Ça, t'as repris ce que l'on fait ou t'es un peu creusé pour les classes, etc. de ces discussions qu'on a eu la dernière fois ou t'as repris tel quel pour l'instant En utilisant les actions qu'ils ont dans les autres scénarios En gros, j'ai pioché dans le facteur de l'aéros, c'est quoi exactement ce que je recherches ? Parce que par exemple, il y a l'action follow line qui existe déjà. Donc, il n'y a pas de documentation où il y a marqué, tiens, c'est ça l'ensemble des actions. Mais par contre, j'ai vu dans un autre scénario qu'il y avait cette action-là follow line qui était utilisée, donc du coup je l'ai utilisée. Donc, par contre, tu as gardé les erreurs que tu avais relevées dans la fois, comme le keep alarm par exemple. Tu as pas levé ce terror là, dans la fois. Tu as gardé un peu leur truc à eux. C'est ce que tu avais. Scénario top, je crois.
+
+**[11:10]** Tu as marqué keep, ouais. Je sais pas si j'ai faux ou pas en fait, ça se rend rouge, ça s'enrouge, parce que je sais pas si ce que j'ai dans l'interprétation est correct. Eh ben je pense qu'elle est bonne, parce que Claude quand je lui ai donné des scénarios, il m'a relevé le même problème que toi. Il m'a dit le kip n'est pas bon et le mergent s'y véhicule, des fois il s'appelle ambulance et il dit que là aussi il y a des incohérences. Et c'est ce que tu as élevé toi aussi la dernière fois justement. Donc il a commencé à voir ses problèmes aussi. Il y a aussi là je crois, j'ai mis des variables de départ par exemple, ça je les connais pas
+
+**[11:58]** donc du coup j'ai mis des variables, ça aussi je sais pas ce que c'est donc j'ai mis des variables pareil pour le offset sur la shoulder Ok, j'ai compris Donc là par exemple, j'ai juste commencé, j'ai fini mais en gros c'est pour ce scénario là,
+
+**[12:44]** les deux Lego, nous, loin de nous, quand on commence ce scénario Ok, j'ai compris. C'est pas mal ça. Pour tous les scénarios. Et donc du coup là, on a... je vois une trentaine de scénarios. Ouais, une petite trentaine. Ah, on a beaucoup plus du quoi. On a 28. 28 scénarios. D'une petite et d'autre. C'est pas moi qui les a écrits quand ils sont un peu compliqués. Tu vois les nains qui sont un peu compliqués.
+
+**[13:30]** Ah, le scénario name, donc par exemple si je prends le 28, tu peux avoir plusieurs scénarios textes associés à ça, c'est ça ? Parce que je vois que le 28 a plusieurs lignes de scénarios 28, si je dis pas de bêtises. Ah non non, il y a plusieurs... Est-ce que moi il les a fusionnés ? Ok, d'accord. Je peux les fusionner pour qu'il y ait l'espace, pour qu'il arrive à la nuit. Ça marche. C'est pour du déo, il y a un peu.
+
+**[14:24]** Ok. Je comprends. Parce qu'en fait, c'est du coup le scénario, tous les 149 mètres, c'est ça à l'île. Je comprends.
+
+**[15:11]** Ok. Ok, ok. Je trouve les cons un peu compliqués. Je n'ai pas trop. Ok. Ok, je comprends.
+
+**[16:15]** Je vais demander un peu. Ouais. Un peu tricky, un peu stress pour le véhicule.
+
+**[17:09]** Ok. Voilà. Ok. Pour le type. Et juste pour que je comprenne, on sait plus pour la suite, en fonction des paramètres que tu mets des variables et des points de départ, tu peux avoir une quantité monstrueuse de scénarios à simuler, on est d'accord là-dessus. T'es limité sur la puissance de test ou t'es pas du tout limité du coup ? Donc longitude
+
+**[18:02]** de latitude, on part sur un élément fixe, on fait plein de scénarios autour de ce point là et après on voit si on s'en fout plus tard le longitude de latitude. Donc globalement c'est ça l'idée. Je pense oui. Ok, c'est juste pour que je me repose en tout cas. Je ne sais pas à quel point la géométrie, je ne suis pas sûr, je ne sais pas à quel point ça ne le rend pas compte. Il y a des tubes, on s'étude à terme de puissance de calcul. Des VM ? Je ne sais pas à quel point ça ne me rend pas compte.
+
+**[18:47]** On peut c'est chez moi, mais... Ça commence à être des bons trucs quand même. Oui, tu peux mettre des trucs sympas. Je pense que 32 de rachitière, pas trop dégueu.
+
+**[19:36]** Il y a un gain d'autres équipes. Ok.
+
+**[20:30]** Ça marche. Sur ce fichier, je suis d'accord. Sur ce fichier aussi, mes amis.
+
+**[21:25]** Ouais bah je prendrai peut-être celle-ci directement dans le fichier, du coup si tu les as là. Je t'enregistre une colonne du coup, peut-être. Pour pas m'éloigner. Par théorie, je pense que tu vais des changements de voie.
+
+**[22:23]** Après, qui m'a mis un truc du temps, tu peux continuer. Ok. Faire même tes propres... tes mêmes potes, tes propres propales, tu peux faire une colonne et du coup aussi.
+
+**[23:10]** Tu sais, d'avoir Tarsim qui marche, et Mardi on fait un exemple. À montrer à Gérie, on me tient, regarde, on me tient. Je vois l'idée. On a le mapping, on a l'attrace à ça et on a les scénarios enrichis et on a un cas tourné qui marche, on grossit ça à l'idée. Ouais, c'est ça. C'est ce qu'ils voulaient faire eux avec IWAI du coup en fait. Ouais. Ok. Ça marche. Ouais.
+
+**[23:55]** Bah avec ça, LIA, les outils que vous avez, il y a de quoi faire tout seul en soir. Pas besoin de payer les liens, en vrai. Ouais, c'est tout. Je te fais le mapping du coup, je rajoute mon mapping à ton mapping pour les exigences, donc c'est les premières colonnes. Donc je te fais ça. 2. Je regarde les scénarios SC variable comme tu m'as dit dans les variables pour les véhicules est ce que vous prenons en compte vous la couleur la taille des véhicules etc ou c'est assez standard ok et vous faites de la caméra tu m'avais dit enfin pour détecter les véhicules etc
+
+**[25:22]** tu me dis un fois que vous n'utilisez pas la radar typiquement mais utiliser caméra et l'idar c'est si je n'ai pas de bêtises. Ok, je crois que dans certains cas de figure, des fois la couleur du véhicule ça joue pour détecter. Tu n'arrives pas à détecter proprement des fois si tu as une couleur gris sur gris des fois, il galère. Par exemple, je pense que ça sera intéressant si on arrive à faire un deuxième étape, voir qu'on peut s'amuser de perfection. Là tu fais juste la dynamique et la loi de contrôle globalement, c'est ça.
+
+**[26:09]** Ok, ok, ok. Les casques sont définis.
+
+**[27:10]** Mais on mine non, donc c'est pas clair en compte pour l'instant, c'est les perceptions pures. Tu considères que la perception est bonne, c'est ça ? En fait, c'est uniquement le défaut. Ok. Et t'avais raison, pas ça, je modèle 3, c'est pas ça. bien la Tesla du coup quand tu vois le commentaire link 56 c'est la Tesla quoi ok ça c'est un truc au bord de base de
+
+**[28:06]** pen scénario c'est pas un truc de plus de scenarios c'est nous qui décidons et donc du coup lui les culs avec les finissons des dimensions ok un ambulance ok les scénarios qui utilisent autre classe les unités c'est
+
+**[29:31]** en mètres non ? 2,2, 5, 2, 2 ? Ouais, ça du mètre. Ok, ça marche. Dans les variables, ça je ne le prends pas en compte. Du coup c'était ça la, tu sais quand je me disais s'il fallait rajouter des variables, ça je ne le rajoute pas du tout. On se le note peut-être pour la suite mais au premier G on ne le prend pas en compte tout de suite. On part sur ce qu'ils ont et pas ça. Vous êtes géris, euh... Très clair.
+
+**[30:20]** Tu te mets un jour le mapping, je te fais les OCS et les variables range pour vendredi, lundi tu peux se refaire un point avant mardi, si ça te va. le sync c'est quoi c'est lui de... ok ça roule, bon bah super dans ce cas là je pense qu'il y a rien pour toi non j'ai pas poussé encore la mise à jour vu que c'était pas urgent je me suis concentré sur ça pour l'instant si marouan il a une urgence je prendrai un peu plus de temps semaine prochaine sur ce sujet pour le
+
+**[31:05]** poturer s'il a une urgence. j'ai commencé à regarder le fichier que tu m'avais envoyé là tu sais le zip où il y avait tous les Torxim scénarios, il y a pas mal de scénarios quand même il y en a un sacré paquet quand tu penses t'as la cc, t'as le link keeping etc t'as un sacré nombre de
+
+**[31:51]** scénarios, le link keeping, le mec qui m'a d'Alice ça du coup, il va y faire ça, il va y faire ça, du coup il a fait ça, ok parce qu'on se concentre que sur les scénarios qui impliquent un émergent de
+
+**[33:25]** véhicule déjà ok d'accord de base donc quand je vois useful less as a mv ouais parce que nous par contre excuse moi je recommence nous on veut se concentrer que sur un scénario qui ont un lien
+
+**[34:10]** avec les émergencies véhicules par exemple ok d'accord je comprend c'est pour ça que tout ce qui est cutting que t'as ou que t'as la ligne 33 34 35 ceci on les dégage il n'y a pas d'impact pour les mv on va pas les réutiliser tel quel quoi je comprends c'est pas il n'y a pas d'intérêt je Je comprends, je comprends, ok c'est pas mal ce petit tableau là, c'était ce que j'ai prévu de faire vendredi donc c'est cool Ici avec est ce qu'il manque et qu'est ce qu'il faut faire pour que ça soit utilisable
+
+**[35:10]** ça marche Ah t'as du cramer du token là-dessus quand même Ah oui d'accord on est pas dans la même cour là Ah oui, ok non moi j'ai le faible et le mytho sur moi c'est mon truc en perso, le 5 il est bien le cas, le opus 5 il suffit très bien, honnêtement.
+
+**[35:55]** Ok, je te fais pour résumer la 1, je te rajoute les mappings colonne B du coup, je te mettrai ça dans une autre couleur, je regarde les scénarios, je te mets les variables et mais j'ai refaire peut-être le même travail un peu que tu as fait ou peut-être repartir ton fichier là pour que tu aies rigorisé les scénarios voir un peu tous les scénarios qui sont sur github etc pour que je comprenne aussi un peu ce qu'il y a dessus je le lise aussi
+
+**[36:43]** sur drive ouais ok super ok et donc toi là ce qu'il reste à faire c'est quoi du coup comme ça je vois aussi tu veux commencer peut-être par les scénarios du haut et moi je fais ce du bas comme ça on se rejoint au milieu qu'on s'en fait pas deux fois les mêmes, il faut que tu en fasses le moins, parce qu'on t'en penses. Bon, à côté ?
+
+**[37:29]** Ok, comme ça, on vendrait du essai de faire tourner un scénario pour voir à quoi on s'en sent. Ok, je vais attaquer les variables du coup demain à partir du bas. Donc je vais partir par les derniers scénarios tout en bas et je vais remonter petit à petit. Comme ça, si tu veux bidouiller les premiers pour faire les tests, tu peux comme ça. Je te gêne pas. Ok, super. Mais tu me corriges, mais du coup, c'est quoi la suite après mardi ? tu présentes ça à Géry, t'as tout feu au final ? Ok, d'accord. Si tu te dis sur les longues titules,
+
+**[38:25]** la titule pour N.A.R.M.E. Ouais. Pour le satif.
+
+**[39:28]** Ok, ça marche. Et... Ok, il faudrait que je reprenne, ce qu'il va envoyer à Géry, il va envoyer un peu un exécutif semerier ou un cadre comme ça, de ce qu'il attendait. Il faut juste que je reprenne, parce qu'il parlait beaucoup des exigences, je pense qu'ils voulaient aussi à terme qu'on dérive des exigences, qu'on vérifie la complétude je crois je sais pas si je te prends l'action que je regarde dans des tailles et je te dirai je te reverrai un petit message pour te le dire si tu veux, qu'on se loupe pas aussi sur son attente éventuellement, c'est vrai que j'ai pas fait gaffe parce qu'il y avait écrit en détail, bah écoute je te fais ça je te fais une petite synthèse de ce qui se dit demain comme ça on
+
+**[40:18]** On va vérifier qu'on est bien lignés avec ce qu'il voulait aussi. Éventuellement. Je pense que oui, mais... Il n'y a pas de raison. Ok. Moi je t'envoie une arrière pour lundi. Lundi, il y a quoi qu'il marche ? Qu'est-ce qu'il marche comme temps pour temps ? Même heure qu'aujourd'hui, c'est nickel. C'est adroit. Ouais, si je te le rends, je ne suis pas dispo de 14h30 à 15h30. Après 15h30 tu vois.
+
+**[41:12]** je te fais... ma top Ecoute toi dès que t'as tout mis sur l'order live, je te mette aussi mon fichier, je te complète tout ça je te fais la synthèse de main de ce qu'il y avait dans le document Word je continue à les remplir, je te fais les variables et puis lundi on se refait le point ouais ouais je viens de recevoir matrisque c'est... ok ça marche et j'ai reçu l'invite ok top super bon bah merci beaucoup allez bonne soirée à toi merci, t'as vu au fait...
+
+**[41:57]** mai est devenu public Non, après ça n'est pas comment tu as rentré quoi. Mais 4 milliards sur... Ah oui, 14 milliards. Ok d'accord, j'avais pas compris ça. Ok. Non, je crois qu'ils sont pas... bah c'est pas très haut, hein, de 4 milliards. Et torques, tu sais s'ils vont rentrer ? Ok. Ah c'est juste que je suis... Enfin, généralement, tu le fais quand t'es bien parti ou quand t'as vraiment besoin d'argent.
+
+**[42:52]** Quand t'es privé. Bon, t'es... Dans la France. Si t'as des stocks, ça sert à rien. Mais c'est pas ça, c'est pas ça. C'est pas ça, c'est pas ça. Si tu as des stocks, ça sert à rien encore. Ah, ok. D'accord, tu n'avais pas ça. Vous pouvez suivre, c'est peut-être Bethès, il va le vendre droit. Des droits, ok. Ah, je vais peut-être négocier ça dans mon renouvellement de contrat.
+
+**[43:38]** Là, demande... Pour l'année prochaine. Ouais. Ouais, c'est ce que m'a dit Jerry. Il m'a dit qu'il y a eu un accord verbal, comme quoi c'était ok. Mais... Maintenant, faut que ça soit... Ouais. Je sais pas à quelle heure... C'est ça. Ce que je me disais de Jerry, c'est qu'il a vu avec Miguel pour reconduire le même budget pour l'année prochaine. C'est ça. Je crois qu'il commence à faire de l'humour pour les négocier maintenant, je crois.
+
+**[44:25]** Et après, il est clôture, octobre, novembre, je crois. Ouais, donc en fait, oui, c'est juste le début, le 25 août. C'est bien déjà qu'il se projette, c'est plutôt bien pour vous. Du coup, c'est que ça se passe bien. Mais au prévu, quoi. En début d'année, c'était pas comme ça. Ça se passe bien. On est même passés, mais en gros l'appel à la PDG de l'AlmArc qui a pris nous pendant leur réunion de l'année. J'ai vu sur LinkedIn, le CEO, le CTO, je crois, de temps qu'on a parlé sur LinkedIn. Ah c'est le CEO, c'est pas le CEO.
+
+**[45:10]** Bientôt on arrêtera de s'appeler Tor qui est mon ordre. Demler ? Demler aux emboutilles. Demler à Jérôme, à Mercedes. Bon Tor que c'est pas mal quand même. On a un peu l'enfant, on a un peu l'enfant bâtard quoi. Ah le John Snow quoi. C'est ça, on peut pas avoir un vrai nom, c'est un peu... C'est un peu pire, c'est ça. C'est qu'on a un peu plus dans le... De Demler.
+
+**[45:56]** Ouais. Ouais, bah si les résultats sont bons, je pense que c'est un cas, non. Même eux, ils ont tellement mis d'argent dessus, qu'au bout d'un moment ils vont devoir le rentabiliser aussi.
+

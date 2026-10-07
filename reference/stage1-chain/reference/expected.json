@@ -1,0 +1,61 @@
+{
+  "schema": "scenario-studio/reference@0.1",
+  "abstract": "ABS-HW-LC-SHOULDER-STOPPED-VEHICLE",
+  "behavior": "BEH-HW-LANE-CHANGES-OVERTAKING",
+  "note": "Hand-written reference: what the tool must produce for this abstract. Written before running the tool.",
+  "expected_counts": {
+    "potential": 36,
+    "valid": 36,
+    "rejected": 0
+  },
+  "why": "3 presence patterns (front only, rear only, front+rear; all-absent removed) x 2 lane counts x 3 shoulder distances x 2 offsets = 36. Offset 0.8 m + 2.0 m vehicle = 2.8 m <= 3.6 m shoulder, so no envelope rejection.",
+  "must_contain": [
+    {
+      "label": "front only, 2 lanes, shoulder at 40 m, offset 0",
+      "parameters": {
+        "road.laneCount": 2,
+        "actors.front.present": true,
+        "actors.rear.present": false,
+        "actors.shoulder.distanceM": 40,
+        "actors.shoulder.offsetM": 0
+      }
+    },
+    {
+      "label": "front+rear, 3 lanes, shoulder at 80 m, offset 0.8",
+      "parameters": {
+        "road.laneCount": 3,
+        "actors.front.present": true,
+        "actors.rear.present": true,
+        "actors.shoulder.distanceM": 80,
+        "actors.shoulder.offsetM": 0.8
+      }
+    },
+    {
+      "label": "rear only, 2 lanes, shoulder at 60 m, offset 0",
+      "parameters": {
+        "road.laneCount": 2,
+        "actors.front.present": false,
+        "actors.rear.present": true,
+        "actors.shoulder.distanceM": 60,
+        "actors.shoulder.offsetM": 0
+      }
+    }
+  ],
+  "must_reject": [
+    {
+      "label": "vehicle intruding into ego lane (offset -0.5) is not 'fully on shoulder'",
+      "override": {
+        "values.shoulderOffsetM": [
+          -0.5
+        ]
+      },
+      "rule": "R_SHOULDER_ENVELOPE"
+    }
+  ],
+  "trace_required": [
+    "behavior",
+    "abstract",
+    "abstract_version",
+    "hire"
+  ]
+}
