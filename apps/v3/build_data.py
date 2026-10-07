@@ -160,12 +160,49 @@ for a in CAT["abstracts"]:
                           configuration=cfg, fixed=a.get("fixed") or {}, applicability=a.get("applicability") or {}, version=a.get("version", 1),
                           hazards=a.get("hazards") or [], jama=a.get("jama") or [], nhtsa=a.get("nhtsa") or [], tcs=a.get("tcs") or [],
                           foretellix=a.get("foretellix") or [], links=links))
-hire = {i: dict(odd=H2[i]["odd"], man=H2[i]["man"], mal=H2[i]["mal"], ev=(H2[i].get("ev") or "")[:260], hz=H2[i]["hz"], S=H2[i]["S"], E=H2[i]["E"], C=H2[i]["C"], mrm=bool(H2[i]["mrm"])) for i in sorted(used)}
+hire = {i: dict(beh=MAP.get(H2[i]["code"], "STATE"), odd=H2[i]["odd"], man=H2[i]["man"], mal=H2[i]["mal"], gw=H2[i].get("gw"), ev=(H2[i].get("ev") or "")[:220], hz=H2[i]["hz"], S=H2[i]["S"], E=H2[i]["E"], C=H2[i]["C"], mrm=bool(H2[i]["mrm"])) for i in sorted(H2)}
+
+# ---------------- SOTIF analyses: FI, TC, STPA ----------------
+import openpyxl
+FM = sys.argv[4] if len(sys.argv) > 4 else str(HERE.parents[1] / "inputs/torc/Full_Mapping_TC_FI_Hazard_Arch.xlsx")
+QA = FM.replace("Full_Mapping_TC_FI_Hazard_Arch.xlsx", "STPA Analysis - QA Review.xlsx")
+GROUP = {"Actors traveling in same direction/path": "Same direction / path", "No Actors": "No Actors", "Actors merging into or out of ego lane": "Merging in/out of ego lane",
+         "Self-imposed loss of control / inability to execute trajectory": "Self-imposed loss of control", "Road debris or other obstacles in or near ego lane": "Road debris / obstacles",
+         "Actors traveling in opposite direction": "Opposite direction", "Navigating controlled/uncontrolled intersections": "Intersections",
+         "Passing/interacting with VRUs or emergency vehicles": "VRUs / emergency vehicles", "Work zones": "Work zones", "Transversal — all groups (perception degradation)": "Transversal (perception degradation)"}
+wb = openpyxl.load_workbook(FM, read_only=True, data_only=True)
+tcs, fis = {}, {}
+for r in list(wb["TC-FI exploded"].iter_rows(values_only=True))[1:]:
+    if not r[0]: continue
+    t = tcs.setdefault(r[0], dict(id=r[0], layer=r[1], element=r[2], text=r[3], status=r[4], hazards=[h.strip() for h in (r[5] or "").split(",") if h.strip()], stpa=[], fis=[], mrm=False))
+    for g in (r[6] or "").split(";"):
+        g = GROUP.get(g.strip(), g.strip())
+        if g and g not in t["stpa"]: t["stpa"].append(g)
+    if r[7] and r[7] not in t["fis"]: t["fis"].append(r[7])
+    if r[11] == "MRM": t["mrm"] = True
+for r in list(wb["FI summary"].iter_rows(values_only=True))[1:]:
+    if r[0]: fis[r[0]] = dict(id=r[0], block=r[1], name=r[2], ntc=int(r[3] or 0), hazards=[h.strip() for h in (r[4] or "").split(",") if h.strip()], mrm=r[5] == "MRM", latent=r[6] == "LATENT", causes=[])
+for r in list(wb["FI - Architecture"].iter_rows(values_only=True))[1:]:
+    if r[0] in fis: fis[r[0]]["causes"].append(dict(component=r[3], note=r[4]))
+modes = [dict(hazard=r[0], mode=r[1], meaning=r[2], fis=[x.strip() for x in (r[3] or "").split(",") if x.strip()]) for r in list(wb["Hazard - Failure modes"].iter_rows(values_only=True))[1:] if r[0]]
+# TCs referenced by scenarios but absent from the mapping: keep from the catalogue reference list
+REF = json.load(open(HERE.parents[1] / "data/derived/ref.json"))
+for k, v in REF["tc"].items():
+    if k not in tcs: tcs[k] = dict(id=k, layer=v.get("layer"), element=v.get("element"), text=v.get("tc"), status=v.get("status"), hazards=[h.strip() for h in (v.get("haz") or "").split(",") if h.strip()], stpa=[], fis=v.get("fi") or [], mrm=False)
+qa = openpyxl.load_workbook(QA, read_only=True, data_only=True)
+GW = ["Not providing", "Providing", "Too late", "Too early", "Duration", "Unclear"]
+groups = []
+for r in list(qa["Coverage Matrix"].iter_rows(values_only=True))[4:]:
+    if r[0] and not str(r[0]).startswith("[Parking]"): groups.append(dict(name=r[0], ucas={g: int(r[i + 1] or 0) for i, g in enumerate(GW)}, total=int(r[7] or 0)))
+missing = [dict(id=r[0], group=r[1], gw=r[2], text=r[3]) for r in list(qa["UCAs missing scenarios"].iter_rows(values_only=True))[4:] if r[0]]
+summary = {str(r[0]).strip(): r[1] for r in qa["Summary"].iter_rows(values_only=True) if r[0] and r[1] is not None and not str(r[0]).startswith(("HIGH", "MED", "LOW"))}
+findings = [dict(sev=r[1], area=r[2], finding=r[3], rec=r[4]) for r in list(qa["Findings"].iter_rows(values_only=True))[3:] if r[0]]
+sotif = dict(fis=fis, tcs=tcs, failure_modes=modes, stpa=dict(groups=groups, missing=missing, summary=summary, findings=findings))
 jama = {k: dict(id=k, name=v["name"], text=(v["text"] or "")[:600]) for k, v in JR.items()}
 data = dict(meta=dict(name="Scenario Studio", version="3.0", corridor="DO-Crawl I-35 South", built="2026-10-07",
                       sources=["SERYTI catalogue v3 (121 abstracts)", "HIRE v2 (1,156 HARA)", "HFS V1 (138)", "Driver Out 2026 SDT Requirements (Jama export 26/03/2026)", "L1-L5 ODD report (I-35 South)", "Foretellix SAFE VMAD-SG1-11-06"]),
             behaviors=behaviors, hazards=hazards, criteria=criteria, odd=dict(elements=odd_elements, variants=VARIANTS, lane_share=LANE_SHARE, routes=[r["name"] for r in ODD["routes"]]),
-            families=fam, scenarios=scenarios, hire=hire, jama=jama, nhtsa=CAT["nhtsa"], foretellix=CAT.get("foretellix", {}))
+            families=fam, scenarios=scenarios, hire=hire, sotif=sotif, jama=jama, nhtsa=CAT["nhtsa"], foretellix=CAT.get("foretellix", {}))
 json.dump(data, open(OUT, "w"), ensure_ascii=False)
 print("behaviors", len(behaviors), "scenarios", len(scenarios), "links", sum(len(s["links"]) for s in scenarios), "hire rows", len(hire), "bytes", OUT.stat().st_size)
 print(collections.Counter(c for s in scenarios for c in s["links"]))

@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0 · 7 October 2026
+* Generate view: drafts for a behavior from HIRE combinations (hazard × command × ODD condition), triggering conditions, Foretellix and NHTSA references, or a description (template match, or Claude when available). Accept, preview, discard, export.
+* SOTIF analysis view: FIs with AV3.0 causes, TCs, STPA context groups and QA findings, hazard failure modes, each traced to scenarios, tests and results.
+* Tree from an FI; FI & TC tab in each scenario.
+* All 1,156 HIRE v2 rows in the data model; STPA QA review added to the inputs.
+* Tests for generation and the SOTIF chain; generated `docs/sotif.md`.
+
 ## 3.0.0 · 7 October 2026
 * New English tool `apps/v3`: overview per behavior, behavior dashboard, scenario file, flowchart tree, ODD view, data import and export.
 * Behavior codes aligned on the Abstract Scenario Manager (HW-AF, HW-LCC, HW-ORM, HW-ORE, HW-SOS, HW-SIL, URB-CWY, URB-SI, URB-TI, HUB-GEN…).

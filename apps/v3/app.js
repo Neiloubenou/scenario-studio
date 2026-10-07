@@ -110,7 +110,9 @@ function render(){
   const m = $('#main');
   if (state.view === 'overview') m.innerHTML = viewOverview();
   if (state.view === 'behavior') m.innerHTML = viewBehavior();
-  if (state.view === 'tree') { m.innerHTML = viewTreeShell(); drawTree(); }
+  if (state.view === 'tree') { m.innerHTML = viewTreeShell(); G.treeMode === 'fi' ? drawFiTree() : drawTree(); }
+  if (state.view === 'generate') m.innerHTML = viewGenerate();
+  if (state.view === 'sotif') m.innerHTML = viewSotif();
   if (state.view === 'odd') m.innerHTML = viewOdd();
   if (state.view === 'data') m.innerHTML = viewData();
   renderDrawer();
@@ -202,7 +204,7 @@ function renderDrawer(){
   if (!state.scn) { root.innerHTML = ''; document.body.style.overflow = ''; return; }
   document.body.style.overflow = 'hidden';
   const s = SCN[state.scn], b = BEH[state.beh] && s.links[state.beh] ? BEH[state.beh] : BEH[Object.keys(s.links)[0]], link = s.links[b.code], st = state.stats[`${s.id}@${b.code}`];
-  const tabs = [['summary', 'Summary'], ['hire', `HIRE & risk (${link.rows.length})`], ['criteria', `Pass/fail criteria (${link.criteria.length})`], ['odd', 'ODD variants'], ['tests', `Tests${st ? ' (' + fmt(st.tot.valid) + ')' : ''}`]];
+  const tabs = [['summary', 'Summary'], ['hire', `HIRE & risk (${link.rows.length})`], ['criteria', `Pass/fail criteria (${link.criteria.length})`], ['odd', 'ODD variants'], ['fitc', `FI & TC (${(s.tcs || []).length})`], ['tests', `Tests${st ? ' (' + fmt(st.tot.valid) + ')' : ''}`]];
   let body = '';
   if (state.tab === 'summary') {
     let fig = `<div class="empty">${esc(s.gen_note || 'Not generable yet.')}</div>`;
@@ -241,6 +243,7 @@ function renderDrawer(){
         <td class="num">${x ? fmt(x.pot ?? x.deferred) : ''}</td><td class="num">${x && !x.deferred ? fmt(x.valid) : ''}</td><td>${x && x.rules ? Object.entries(x.rules).map(([r, k]) => `<span class="chip ex">${r} ${k}</span>`).join(' ') : ''}</td><td>${x && !x.deferred ? sbar(x) : ''}</td></tr>`; }).join('')}</tbody></table></div>`;
   }
   if (state.tab === 'tests') body = testsTab(s, b, link, st);
+  if (state.tab === 'fitc') body = fiTcTab(s);
   $('#drawerRoot').innerHTML = `<div class="scrim" data-close="1"></div><aside class="drawer" role="dialog" aria-label="Scenario ${esc(s.id)}"><div class="dhead"><div class="row"><div><div class="sid">${s.id} · ${b.code} · ${esc(DATA.families[s.family]?.name || '')}</div><h2>${esc(s.title)}</h2></div><button class="btn small x" type="button" data-close="1">Close</button></div>
     <div class="tabs" role="tablist">${tabs.map(([k, l]) => `<button type="button" role="tab" data-tab="${k}" aria-selected="${state.tab === k}">${l}</button>`).join('')}</div></div><div class="dbody">${body}</div></aside>`;
 }
@@ -265,7 +268,10 @@ function testsTab(s, b, link, st){
 
 /* ---------- tree (flowchart) ---------- */
 function viewTreeShell(){
-  return `<div class="tree-tools">${behaviorSelect('treeSel')}<button class="btn small" type="button" id="expAll">Expand all</button><button class="btn small" type="button" id="colAll">Collapse</button>${legend()}</div>
+  const mode = `<div class="seg" role="group" aria-label="Start from"><button type="button" data-tree-mode="behavior" aria-pressed="${G.treeMode === 'behavior'}">From a behavior</button><button type="button" data-tree-mode="fi" aria-pressed="${G.treeMode === 'fi'}">From an FI</button></div>`;
+  if (G.treeMode === 'fi') return `<div class="tree-tools">${mode}<select id="fiSel" aria-label="Functional insufficiency">${Object.values(DATA.sotif.fis).map(f => `<option value="${f.id}" ${f.id === G.treeFi ? 'selected' : ''}>${f.id} · ${esc(f.name.slice(0, 70))}</option>`).join('')}</select>${legend()}</div>
+    <p class="note">FI → triggering conditions → scenarios → test results. Click a scenario to open it. A red TC has no scenario yet.</p><div class="tree-wrap" id="treeWrap"></div>`;
+  return `<div class="tree-tools">${mode}${behaviorSelect('treeSel')}<button class="btn small" type="button" id="expAll">Expand all</button><button class="btn small" type="button" id="colAll">Collapse</button>${legend()}</div>
     <p class="note">Behavior → scenarios → ODD variants → test results. Click a scenario to show its variants, click ↗ to open it.</p><div class="tree-wrap" id="treeWrap"></div>`;
 }
 function drawTree(){
@@ -426,5 +432,3 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.scn)
 document.addEventListener('dragover', e => { const d = e.target.closest?.('#drop'); if (d) { e.preventDefault(); d.classList.add('over'); } });
 document.addEventListener('dragleave', e => { const d = e.target.closest?.('#drop'); if (d) d.classList.remove('over'); });
 document.addEventListener('drop', e => { const d = e.target.closest?.('#drop'); if (d) { e.preventDefault(); d.classList.remove('over'); if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); } });
-const start = (location.hash || '').replace('#', '');
-setView(['overview', 'behavior', 'tree', 'odd', 'data'].includes(start) ? start : 'overview');

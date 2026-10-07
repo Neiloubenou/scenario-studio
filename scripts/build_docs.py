@@ -38,4 +38,21 @@ for s in D["scenarios"]:
         fam = s["family"]; L += ["", f"## {fam} · {D['families'][fam]['name']}", "", "| ID | Scenario | Behaviors | HIRE | Criteria | Generable |", "|---|---|---|---|---|---|"]
     L.append(f"| {s['id']} | {s['title']} | {', '.join(s['links'])} | {', '.join(sorted({l['level'] for l in s['links'].values()}))} | {', '.join(sorted({c for l in s['links'].values() for c in l['criteria']}))} | {'yes' if s['generable'] else 'milestone 2'} |")
 (docs / "scenarios.md").write_text("\n".join(L) + "\n")
+so = D["sotif"]; t2s = collections.defaultdict(list)
+for s_ in D["scenarios"]:
+    for t in s_["tcs"]: t2s[t].append(s_["id"])
+L = ["# SOTIF analysis", "", "Chain: functional insufficiency (FI) → triggering condition (TC) → hazard and HIRE risk → scenario → concrete tests → results.",
+     "Sources: Full Mapping TC × FI × Hazard × AV3.0, TC catalogue V3_1, FI list V1, STPA QA review (27 Jul 2026).", "",
+     "## Functional insufficiencies", "", "| FI | Block | Insufficiency | Hazards | TCs | Scenarios | Status |", "|---|---|---|---|---|---|---|"]
+for f in so["fis"].values():
+    tcs = [t for t in so["tcs"].values() if f["id"] in t["fis"]]; sc = sorted({x for t in tcs for x in t2s[t["id"]]})
+    st = "latent" if f["latent"] and not tcs else ("no scenario" if not sc else "covered")
+    L.append(f"| {f['id']} | {f['block']} | {f['name']} | {', '.join(f['hazards'])} | {len(tcs)} | {len(sc)} | {st} |")
+gap = [t for t in so["tcs"].values() if not t2s[t["id"]]]
+L += ["", f"## Triggering conditions without a scenario ({len(gap)} of {len(so['tcs'])})", "", "| TC | Layer | Element | Condition | Hazards | FIs |", "|---|---|---|---|---|---|"]
+L += [f"| {t['id']} | {t['layer']} | {t['element']} | {t['text']} | {', '.join(t['hazards'])} | {', '.join(t['fis'])} |" for t in gap]
+L += ["", "## STPA context groups", "", "| Context group | UCAs | Without loss scenario |", "|---|---|---|"]
+miss = collections.Counter(u["group"] for u in so["stpa"]["missing"])
+L += [f"| {g['name']} | {g['total']} | {miss.get(g['name'], 0)} |" for g in so["stpa"]["groups"]]
+(docs / "sotif.md").write_text("\n".join(L) + "\n")
 print("docs written")

@@ -1,6 +1,6 @@
 {
   "name": "scenario-studio",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "description": "Behavior dashboards for the Torc SDT: scenarios with HIRE risk, Jama pass/fail criteria, ODD variants from the I-35 report, generated and excluded concrete tests, results and tree view.",

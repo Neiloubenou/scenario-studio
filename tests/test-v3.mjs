@@ -20,4 +20,17 @@ check(`all ${links} generable links run without configuration error`, errors ===
 check('stats_demo.json in sync with the engine (sampled links)', mismatch === 0, `${mismatch} mismatches`);
 check('every link has at least one HIRE row', D.scenarios.every(s => Object.values(s.links).every(l => l.rows.length > 0)));
 check('every link has pass/fail criteria with a requirement', D.scenarios.every(s => Object.values(s.links).every(l => l.criteria.length && l.criteria.every(c => D.criteria[c]?.req))));
+// generation
+const { hireCombos, draftFromHire, matchTemplate, draftFromTemplate } = await import('../apps/v3/gen.mjs');
+let drafts = 0, invalid = 0;
+for (const code of ['HW-AF', 'HW-LC', 'HW-ORM', 'HW-ORE', 'HW-SOS', 'URB-AF']) for (const c of hireCombos(B[code], D)) { const d = draftFromHire(B[code], c, D); if (!d) continue; drafts++; if (d.errors.length || !d.estimate) invalid++; }
+check(`drafts from HIRE are valid and produce tests (${drafts} drafts)`, drafts > 50 && invalid === 0, `${invalid} invalid`);
+const tpl = matchTemplate('a semi cuts in close in front', B['HW-AF'], D);
+check('text matcher finds a template', tpl?.id === 'CI-05', tpl?.id);
+check('draft from a template keeps HIRE rows and criteria', (() => { const d = draftFromTemplate(B['HW-AF'], tpl, {title: 't', desc: '', source: {type: 'Text'}}, D); return d && !d.errors.length && d.links['HW-AF'].rows.length > 0 && d.links['HW-AF'].criteria.includes('C01'); })());
+// SOTIF analyses
+const so = D.sotif;
+check('SOTIF data: 42 FIs, 277 TCs, 10 STPA context groups', Object.keys(so.fis).length === 42 && Object.keys(so.tcs).length === 277 && so.stpa.groups.length === 10);
+const tcWithScn = new Set(D.scenarios.flatMap(s => s.tcs)); const fiReached = Object.values(so.fis).filter(f => Object.values(so.tcs).some(t => t.fis.includes(f.id) && tcWithScn.has(t.id))).length;
+check('FI → TC → scenario chain reaches most FIs', fiReached >= 30, `${fiReached} FIs reached`);
 process.exit(ok ? 0 : 1);
