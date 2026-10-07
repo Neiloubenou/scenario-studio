@@ -6,6 +6,19 @@ La chaîne : **behavior → scénarios abstraits (catalogue) → tous les scéna
 
 Statut : jalon 1, valeurs et liens PROPOSED, à relire avec Torc.
 
+## Scenario Studio v3 (English, current version)
+
+`apps/v3/index.html` : the dashboard version asked on 7 October 2026.
+
+* **Overview** : one card per behavior (17, codes of the Abstract Scenario Manager) with tests, pass rate, failures and worst risk.
+* **Behavior** : scenarios with HIRE risk (S/E/C), pass/fail criteria from Jama, results by ODD variant, exclusion reasons; a drawer per scenario (summary and scene, HIRE and risk, criteria, ODD variants, tests with OSC).
+* **Tree** : flowchart behavior → scenarios → ODD variants → results.
+* **ODD** : variants drawn from the I-35 L1–L5 ODD report with their exposure, behavior × variant matrix, ODD elements.
+* **Data** : import TorSim results (CSV or JSON: concrete_id, status, criterion), demo results, exports.
+
+Rebuild : `cd apps/v3 && python3 build_data.py && node build_stats.mjs && python3 build.py`.
+Results shown by default are DEMO values computed from the candidate oracle, not simulation output.
+
 ## Ouvrir les outils
 
 Les deux outils sont des pages HTML autonomes : on les ouvre dans un navigateur, sans serveur.
